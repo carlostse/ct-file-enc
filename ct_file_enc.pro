@@ -1,14 +1,15 @@
 #-------------------------------------------------
 #
+# CT File Encrypt
 #
-#
+# Author: Carlos Tse
+# Email: copperoxide@gmail.com
+# Date: 18 AUG 2014
 #-------------------------------------------------
 
 QT += core gui widgets
-TARGET = magicam_decrypt
+TARGET = ct_file_enc
 TEMPLATE = app
-
-QMAKE_CXXFLAGS += -Wunused-parameter
 
 win32 {
     INCLUDEPATH += C:/OpenSSL-Win32/include
@@ -28,3 +29,5 @@ SOURCES += main.cpp\
     key_util.cpp \
     drop_area.cpp \
     drop_window.cpp
+
+RC_FILE += resource.rc

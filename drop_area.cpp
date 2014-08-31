@@ -1,12 +1,12 @@
 #include "drop_area.h"
 
-DropArea::DropArea(QWidget *parent)
+DropArea::DropArea(const QSize &s, QWidget *parent)
     : QLabel(parent)
 {
-    setMinimumSize(250, 250);
+    setMinimumSize(s);
+    setMaximumSize(s);
     setAlignment(Qt::AlignCenter);
     setAcceptDrops(true);
-    clear();
 }
 
 void DropArea::dragEnterEvent(QDragEnterEvent *event)
@@ -34,9 +34,4 @@ void DropArea::dragLeaveEvent(QDragLeaveEvent *event)
 {
     clear();
     event->accept();
-}
-
-void DropArea::clear()
-{
-    setText(tr("Drop the file here to encrypt / decrypt"));
 }

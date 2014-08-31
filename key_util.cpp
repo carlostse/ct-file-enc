@@ -26,14 +26,15 @@ KeyUtil::~KeyUtil()
     }
 }
 
-void KeyUtil::prepareKeyIv(const char *keyFile)
+void KeyUtil::prepareKeyIv(KeyResult *result, const char *keyFile)
 {
     std::cout << "key file: " << keyFile << std::endl;
 
     if (isKeyExists(keyFile)){
+        result->type = TYPE_KEY_FILE_LOAD;
         std::cout << "load from key file" << std::endl;
-        ByteArray *array = Util::readFile(keyFile);
 
+        ByteArray *array = Util::readFile(keyFile);
         setKey((byte *)malloc(KeyUtil::KEY_LENGTH));
         setIv((byte *)malloc(KeyUtil::IV_LENGTH));
         memcpy(_key, array->data(), KeyUtil::KEY_LENGTH);
@@ -41,6 +42,7 @@ void KeyUtil::prepareKeyIv(const char *keyFile)
         delete array;
 
     } else {
+        result->type = TYPE_KEY_FILE_SAVE;
         generate();
         // save to key file
         ByteArray array(KeyUtil::KEY_LENGTH + KeyUtil::IV_LENGTH);
@@ -49,6 +51,7 @@ void KeyUtil::prepareKeyIv(const char *keyFile)
         Util::writeFile(keyFile, &array);
         std::cout << "save new key file" << std::endl;
     }
+    result->identity = Util::hexString(_key, KeyUtil::KEY_LENGTH);
 }
 
 bool KeyUtil::isKeyExists(const char *keyFile)
@@ -64,7 +67,7 @@ void KeyUtil::generate()
 
     //std::cout << "generate iv" << std::endl;
     setIv((byte *)malloc(KeyUtil::IV_LENGTH));
-    RAND_bytes(_iv, KeyUtil::KEY_LENGTH);
+    RAND_bytes(_iv, KeyUtil::IV_LENGTH);
 }
 
 bool KeyUtil::isEncFile(const QString fileName)

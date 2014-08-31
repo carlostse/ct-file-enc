@@ -3,17 +3,40 @@
 
 DropWindow::DropWindow(std::string directory)
 {
-    setWindowTitle(tr("Magicam Decrypt"));
-    setMinimumSize(250, 250);
-    setMaximumSize(250, 250);
+    QSize size;
 
+    setWindowTitle(tr("CT File Encrypt"));
+    size = QSize(250, 250);
+    setMinimumSize(size);
+    setMaximumSize(size);
     _directory = directory;
-    _keyUtil = new KeyUtil();
-    _keyUtil->prepareKeyIv(_directory.c_str());
 
-    _dropArea = new DropArea(this);
-    _msgBox = new QLabel(this);
+    // menu
+//    QMenuBar *bar = new QMenuBar(this);
+//    QMenu *menuFile = bar->addMenu(tr("File"));
+//    QMenu *menuHelp = bar->addMenu(tr("Help"));
+
+    // widgets
+    _dropArea = new DropArea(QSize(250, 180), this);
+    _dropArea->setText(tr("Drop the file here to encrypt / decrypt"));
+
+    KeyResult result;
+    _keyUtil = new KeyUtil();
+    _keyUtil->prepareKeyIv(&result, _directory.c_str());
+
+    QString message = (result.type == TYPE_KEY_FILE_LOAD? tr("Load Key: "): tr("New Key: "));
+    message.append(QString::fromStdString(result.identity));
+    if (result.type == TYPE_KEY_FILE_SAVE){
+        message.append("\n");
+        message.append(tr("[Warning] Don't lost the key file otherwise you cannot decrypt the files"));
+    }
+
+    _msgBox = new QPlainTextEdit(this);
+    size = QSize(250, 70);
+    _msgBox->setMinimumSize(size);
+    _msgBox->setMaximumSize(size);
     _msgBox->setFont(QFont("Segoe UI Symbol"));
+    _msgBox->appendPlainText(message);
 
     // layout
     QVBoxLayout *mainLayout = new QVBoxLayout;
@@ -39,8 +62,9 @@ void DropWindow::droppedFiles(const QList<QUrl> list)
     std::string action;
 
     for (int i = 0; i < list.size(); i++) {
-        QString url = list.at(i).path();
-        QString fileName = url.mid(1, url.length() - 1), outFileName;
+        QString url = list.at(i).path(),
+                fileName = url.mid(1, url.length() - 1),
+                outFileName;
 
         if (KeyUtil::isEncFile(fileName)){
             action = "dec";
@@ -49,10 +73,10 @@ void DropWindow::droppedFiles(const QList<QUrl> list)
             action = "enc";
             outFileName = _keyUtil->encrypt(fileName, errMsg);
         }
-        std::cout << "file: " << fileName.toUtf8().data() << " [" << action << "] -> " << outFileName.toUtf8().data() << std::endl;
+        qDebug() << "file: " << fileName << " [" << QString::fromStdString(action) << "] -> " << outFileName;
 
-        QString text = _msgBox->text();
-        _msgBox->setText((text.length() > 1? text + "\n": text) + getLock(action == "enc") + outFileName);
+        QString out = outFileName.mid(outFileName.lastIndexOf("/") + 1, outFileName.length() - 1);
+        _msgBox->appendPlainText(getLock(action == "enc").append(" ").append(out));
 
         if (errMsg.length() > 0)
             qDebug() << "error: " << errMsg;

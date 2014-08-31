@@ -19,7 +19,7 @@ private:
     std::string _directory;
     KeyUtil *_keyUtil;
     DropArea *_dropArea;
-    QLabel *_msgBox;
+    QPlainTextEdit *_msgBox;
     QString getLock(const bool);
 };
 

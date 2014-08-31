@@ -8,10 +8,7 @@ class DropArea : public QLabel
     Q_OBJECT
 
 public:
-    DropArea(QWidget *parent = 0);
-
-public slots:
-    void clear();
+    DropArea(const QSize &, QWidget *parent = 0);
 
 signals:
     void dropped(const QList<QUrl> list);
@@ -21,9 +18,6 @@ protected:
     void dragMoveEvent(QDragMoveEvent *event);
     void dragLeaveEvent(QDragLeaveEvent *event);
     void dropEvent(QDropEvent *event);
-
-private:
-    QLabel *label;
 };
 
 #endif // DROPAREA_H

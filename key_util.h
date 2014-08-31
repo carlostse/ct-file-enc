@@ -8,6 +8,14 @@
 #define KEY_ENC_EXT ".enc"
 #define KEY_DEC_EXT ".dec"
 
+#define TYPE_KEY_FILE_LOAD 'L'
+#define TYPE_KEY_FILE_SAVE 'S'
+
+typedef struct {
+    char type;
+    std::string identity;
+} KeyResult;
+
 class KeyUtil
 {
 private:
@@ -22,9 +30,9 @@ public:
     static const int IV_LENGTH = 16;
     KeyUtil();
     ~KeyUtil();
-    void prepareKeyIv(const char *keyFile);
-    static bool isEncFile(const QString fileName);
-    static bool isEncFile(const std::string fileName);
+    void prepareKeyIv(KeyResult *, const char *);
+    static bool isEncFile(const QString);
+    static bool isEncFile(const std::string);
     QString encrypt(const QString fileName, QString &errMsg);
     QString decrypt(const QString fileName, QString &errMsg);
     byte *key();
