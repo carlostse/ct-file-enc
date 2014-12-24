@@ -16,7 +16,7 @@ win32 {
     LIBS += -LC:/OpenSSL-Win32 -leay32 -lssl32
 }
 
-HEADERS += \
+HEADERS += licence.h \
     byte_array.h \
     util.h \
     key_util.h \
