@@ -28,14 +28,22 @@ DropWindow::DropWindow(const char *keyFile)
     _keyFile = keyFile;
 
     // menu
-//    QMenuBar *bar = new QMenuBar(this);
-//    QMenu *menuFile = bar->addMenu(tr("File"));
-//    QMenu *menuHelp = bar->addMenu(tr("Help"));
+    QMenuBar *menu = new QMenuBar(this);
+    QMenu* mainHelp = new QMenu(tr("Help"));
+    menu->addMenu(mainHelp);
+    QAction *actAbout = mainHelp->addAction(tr("About"));
 
     // widgets
-    _dropArea = new DropArea(QSize(250, 180), this);
+    _dropArea = new DropArea(QSize(250, 180 - MENU_H), this);
     _dropArea->setText(tr("Drop the file here to encrypt / decrypt"));
 
+    // debug
+//    QPalette Pal(palette());
+//    Pal.setColor(QPalette::Background, Qt::black);
+//    _dropArea->setAutoFillBackground(true);
+//    _dropArea->setPalette(Pal);
+
+    // prepare key
     KeyResult result;
     _keyUtil = new KeyUtil();
     _keyUtil->prepareKeyIv(&result, _keyFile);
@@ -58,13 +66,14 @@ DropWindow::DropWindow(const char *keyFile)
 
     // layout
     QVBoxLayout *mainLayout = new QVBoxLayout;
-    mainLayout->setMargin(0);
+    mainLayout->setContentsMargins(0, MENU_H, 0 ,0);
     mainLayout->addWidget(_dropArea);
     mainLayout->addWidget(_msgBox);
     setLayout(mainLayout);
 
     // connect signal
     connect(_dropArea, SIGNAL(dropped(const QList<QUrl>)), this, SLOT(droppedFiles(const QList<QUrl>)));
+    connect(actAbout, SIGNAL(triggered()), this, SLOT(helpAbout()));
 }
 
 DropWindow::~DropWindow()
@@ -99,6 +108,11 @@ void DropWindow::droppedFiles(const QList<QUrl> list)
         if (errMsg.length() > 0)
             qDebug() << "error: " << errMsg;
     }
+}
+
+void DropWindow::helpAbout()
+{
+    std::cout << "about" << std::endl;
 }
 
 QString DropWindow::getLock(const bool locked)

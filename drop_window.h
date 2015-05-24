@@ -17,6 +17,8 @@
 #include "drop_area.h"
 #include "key_util.h"
 
+#define MENU_H 20
+
 namespace ct
 {
 class DropWindow : public QWidget
@@ -29,6 +31,7 @@ public:
 
 public slots:
     void droppedFiles(const QList<QUrl> list);
+    void helpAbout();
 
 private:
     const char *_keyFile;
