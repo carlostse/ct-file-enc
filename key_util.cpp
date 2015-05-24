@@ -17,10 +17,6 @@
 #include <openssl/aes.h>
 #include <openssl/evp.h>
 
-#ifdef WIN32
-#include <windows.h>
-#endif
-
 namespace ct
 {
 KeyUtil::KeyUtil()
@@ -157,8 +153,8 @@ QString KeyUtil::encrypt(const QString fileName, QString &errMsg)
     FILE *in, *out;
 #ifdef WIN32
     const wchar_t
-            *inWc = (const wchar_t *)fileName.utf16(),
-            *outWc = (const wchar_t *)outFileName.utf16();
+    *inWc = (const wchar_t *)fileName.utf16(),
+    *outWc = (const wchar_t *)outFileName.utf16();
 
     in = _wfopen(inWc, L"rb");
     out = _wfopen(outWc, L"wb");
@@ -193,8 +189,8 @@ QString KeyUtil::decrypt(const QString fileName, QString &errMsg)
     FILE *in, *out;
 #ifdef WIN32
     const wchar_t
-            *inWc = (const wchar_t *)fileName.utf16(),
-            *outWc = (const wchar_t *)outFileName.utf16();
+    *inWc = (const wchar_t *)fileName.utf16(),
+    *outWc = (const wchar_t *)outFileName.utf16();
 
     in = _wfopen(inWc, L"rb");
     out = _wfopen(outWc, L"wb");

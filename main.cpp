@@ -17,8 +17,15 @@
 
 int main(int argc, char *argv[])
 {
+    // get the key file path
+    DWORD size = MAX_PATH;
+    char keyFile[size];
+    ct::Util::homePath(keyFile, size);
+    strcat(keyFile, "\\");
+    strcat(keyFile, KEY_FILE_NAME);
+
     QApplication a(argc, argv);
-    ct::DropWindow w(ct::Util::getHomePath() + "\\" + KEY_FILE_NAME);
+    ct::DropWindow w(keyFile);
     w.show();
     return a.exec();
 }

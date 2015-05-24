@@ -24,14 +24,14 @@ class DropWindow : public QWidget
     Q_OBJECT
 
 public:
-    DropWindow(std::string);
+    DropWindow(const char *);
     virtual ~DropWindow();
 
 public slots:
     void droppedFiles(const QList<QUrl> list);
 
 private:
-    std::string _keyFile;
+    const char *_keyFile;
     KeyUtil *_keyUtil;
     DropArea *_dropArea;
     QPlainTextEdit *_msgBox;

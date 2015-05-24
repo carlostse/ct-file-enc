@@ -17,7 +17,7 @@
 
 namespace ct
 {
-DropWindow::DropWindow(std::string keyFile)
+DropWindow::DropWindow(const char *keyFile)
 {
     QSize size;
 
@@ -38,12 +38,12 @@ DropWindow::DropWindow(std::string keyFile)
 
     KeyResult result;
     _keyUtil = new KeyUtil();
-    _keyUtil->prepareKeyIv(&result, _keyFile.c_str());
+    _keyUtil->prepareKeyIv(&result, _keyFile);
 
     QString message = (result.type == TYPE_KEY_FILE_LOAD? tr("Load Key: "): tr("New Key: "));
-    message.append(QString::fromStdString(_keyFile));
-//    message.append("\n");
-//    message.append(QString::fromStdString(result.identity));
+    message.append(_keyFile).append("\n");
+    message.append(tr("Fingerprint: "));
+    message.append(QString::fromStdString(result.identity).mid(0, 24));
     if (result.type == TYPE_KEY_FILE_SAVE){
         message.append("\n");
         message.append(tr("[Warning] Don't lost the key file otherwise you cannot decrypt the files"));

@@ -31,13 +31,13 @@ public:
     static std::string hexString(ByteArray *);
     static byte *key(std::string);
     static byte *iv(std::string);
-    static bool isFileExists(const char *fileName);
-    static ByteArray *readFile(const char *fileName);
-    static void writeFile(const char* fileName, ByteArray *data);
+    static bool isFileExists(const char *);
+    static ByteArray *readFile(const char *);
+    static void writeFile(const char *, ByteArray *);
     static int lastIndexOf(const char *, char);
-    static std::string getHomePath();
-    static std::string getExeFileName();
-    static std::string getExePath();
+    static bool homePath(char *, DWORD);
+//    static std::string getExeFileName();
+//    static std::string getExePath();
 };
 }
 

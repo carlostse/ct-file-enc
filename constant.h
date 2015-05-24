@@ -29,4 +29,11 @@ typedef unsigned int uint;
 typedef unsigned char byte;
 #endif
 
+#ifdef WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#else
+typedef unsigned long DWORD;
+#endif
+
 #endif // CONSTANT_H

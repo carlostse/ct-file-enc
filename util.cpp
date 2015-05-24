@@ -109,22 +109,17 @@ int Util::lastIndexOf(const char *str, char c)
     return -1;
 }
 
-std::string Util::getHomePath()
+bool Util::homePath(char *path, DWORD size)
 {
 #ifdef WIN32
-    DWORD size = MAX_PATH;
-    TCHAR path[size];
-    char buffer[size];
     HANDLE hToken;
-
-    if (!OpenProcessToken(GetCurrentProcess(), TOKEN_READ, &hToken)) return "";
-    if (!GetUserProfileDirectory(hToken, path, &size)) return "";
-
-    WideCharToMultiByte(CP_UTF8, 0, path, MAX_PATH, buffer, MAX_PATH, 0, 0);
-    return std::string(buffer);
+    wchar_t wc[MAX_PATH];
+    return OpenProcessToken(GetCurrentProcess(), TOKEN_READ, &hToken) &&
+           GetUserProfileDirectory(hToken, wc, &size) &&
+           WideCharToMultiByte(CP_UTF8, 0, wc, MAX_PATH, path, size, 0, 0) > 0;
 #endif
 }
-
+/*
 std::string Util::getExeFileName()
 {
 #ifdef WIN32
@@ -143,4 +138,5 @@ std::string Util::getExePath()
     return f.substr(0, f.find_last_of("\\/"));
 #endif
 }
+*/
 }
