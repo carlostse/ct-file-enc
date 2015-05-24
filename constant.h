@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#define __VER__ "1.0.0"
 #define KEY_FILE_NAME "key"
 #define KEY_ENC_EXT ".enc"
 #define KEY_DEC_EXT ".dec"

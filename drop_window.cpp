@@ -21,7 +21,7 @@ DropWindow::DropWindow(const char *keyFile)
 {
     QSize size;
 
-    setWindowTitle(tr("CT File Encrypt"));
+    setWindowTitle(tr("CT File Encrypt %1").arg(__VER__));
     size = QSize(250, 250);
     setMinimumSize(size);
     setMaximumSize(size);
