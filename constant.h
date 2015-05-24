@@ -1,3 +1,5 @@
+#ifndef CONSTANT_H
+#define CONSTANT_H
 /* Copyright 2015 Carlos Tse <copperoxide@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,44 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "byte_array.h"
-#include <string.h>
+#define KEY_FILE_NAME "key"
+#define KEY_ENC_EXT ".enc"
+#define KEY_DEC_EXT ".dec"
 
-namespace ct
-{
-ByteArray::ByteArray(size_t size)
-{
-    this->_size = size;
-    this->_data = (byte *)malloc(size);
-}
+#define TYPE_KEY_FILE_LOAD 'L'
+#define TYPE_KEY_FILE_SAVE 'S'
 
-ByteArray::ByteArray(size_t size, byte *data)
-{
-    this->_size = size;
-    this->_data = (byte *)malloc(size);
-    memcpy(this->_data, data, size);
-}
+#ifndef uint
+typedef unsigned int uint;
+#endif
 
-ByteArray::~ByteArray()
-{
-    if (_data){
-        free(_data);
-        _data = NULL;
-    }
-}
+#ifndef byte
+typedef unsigned char byte;
+#endif
 
-size_t ByteArray::size()
-{
-    return this->_size;
-}
-
-byte *ByteArray::data()
-{
-    return this->_data;
-}
-
-ByteArray *ByteArray::copy()
-{
-    return new ByteArray(_size, _data);
-}
-}
+#endif // CONSTANT_H

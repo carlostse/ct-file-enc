@@ -13,10 +13,15 @@ TEMPLATE = app
 
 win32 {
     INCLUDEPATH += C:/OpenSSL-Win32/include
-    LIBS += -LC:/OpenSSL-Win32 -leay32 -lssl32
 }
 
-HEADERS += licence.h \
+win32-g++ {
+    QMAKE_CXXFLAGS_DEBUG += -O0
+    QMAKE_CXXFLAGS_RELEASE += -O2
+    LIBS += -luserenv -LC:/OpenSSL-Win32 -leay32 -lssl32
+}
+
+HEADERS += constant.h \
     byte_array.h \
     util.h \
     key_util.h \

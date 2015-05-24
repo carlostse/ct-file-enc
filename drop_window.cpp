@@ -1,7 +1,23 @@
+/* Copyright 2015 Carlos Tse <copperoxide@gmail.com>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 #include "drop_window.h"
 #include "key_util.h"
 
-DropWindow::DropWindow(std::string directory)
+namespace ct
+{
+DropWindow::DropWindow(std::string keyFile)
 {
     QSize size;
 
@@ -9,7 +25,7 @@ DropWindow::DropWindow(std::string directory)
     size = QSize(250, 250);
     setMinimumSize(size);
     setMaximumSize(size);
-    _directory = directory;
+    _keyFile = keyFile;
 
     // menu
 //    QMenuBar *bar = new QMenuBar(this);
@@ -22,10 +38,12 @@ DropWindow::DropWindow(std::string directory)
 
     KeyResult result;
     _keyUtil = new KeyUtil();
-    _keyUtil->prepareKeyIv(&result, _directory.c_str());
+    _keyUtil->prepareKeyIv(&result, _keyFile.c_str());
 
     QString message = (result.type == TYPE_KEY_FILE_LOAD? tr("Load Key: "): tr("New Key: "));
-    message.append(QString::fromStdString(result.identity));
+    message.append(QString::fromStdString(_keyFile));
+//    message.append("\n");
+//    message.append(QString::fromStdString(result.identity));
     if (result.type == TYPE_KEY_FILE_SAVE){
         message.append("\n");
         message.append(tr("[Warning] Don't lost the key file otherwise you cannot decrypt the files"));
@@ -90,4 +108,5 @@ QString DropWindow::getLock(const bool locked)
     lock[1] = locked? 0xDD12: 0xDD13;
     lock[2] = 0;
     return QString::fromUtf16(lock);
+}
 }
