@@ -106,9 +106,44 @@ void DropWindow::droppedFiles(const QList<QUrl> list)
 
 void DropWindow::helpAbout()
 {
-    std::cout << "about" << std::endl;
-//    QMessageBox::aboutQt(this, tr("About"));
-    QDialog(this);
+    QSize size = QSize(400, 190);
+    QTextEdit *about = new QTextEdit();
+
+    QPalette pal(about->palette());
+    pal.setColor(QPalette::Base, this->palette().window().color());
+
+    about->setWindowFlags(Qt::Dialog);
+    about->setWindowTitle(tr("CT File Encrypt %1").arg(__VER__));
+    about->setReadOnly(true);
+    about->setMinimumSize(size);
+    about->setAutoFillBackground(true);
+    about->setPalette(pal);
+    about->append(
+    "<h3>Copyright 2015 Carlos Tse &lt;copperoxide@gmail.com&gt;</h3>\
+    <p>\
+    Licensed under the Apache License, Version 2.0 (the \"License\");<br>\
+    you may not use this file except in compliance with the License.<br>\
+    You may obtain a copy of the License at</p>\
+    \
+        <p><center>http://www.apache.org/licenses/LICENSE-2.0</center></p>\
+    \
+    <p>Unless required by applicable law or agreed to in writing, software\
+    distributed under the License is distributed on an \"AS IS\" BASIS,\
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\
+    See the License for the specific language governing permissions and\
+    limitations under the License.</p>");
+
+    // append licence
+//    QFile file("./LICENCE");
+//    QTextStream stream (&file);
+
+//    if (file.open (QIODevice::ReadOnly)){
+//        while (!stream.atEnd())
+//            about->append(stream.readLine());
+//        file.close();
+//    }
+    about->moveCursor(QTextCursor::Start);
+    about->show();
 }
 
 QString DropWindow::getLock(const bool locked)
