@@ -16,6 +16,7 @@
 #include <openssl/rand.h>
 #include <openssl/aes.h>
 #include <openssl/evp.h>
+#include <openssl/sha.h>
 
 namespace ct
 {
@@ -93,7 +94,7 @@ bool KeyUtil::isEncFile(const std::string fileName)
     return fileName.find_last_of(KEY_ENC_EXT) == fileName.length() - 1;
 }
 
-bool KeyUtil::encrypt(FILE *in, FILE *out, const byte *key, const byte *iv, const byte mode)
+bool KeyUtil::encrypt(FILE *in, FILE *out, const byte *key, const byte *iv, const byte mode, byte *sha)
 {
     const EVP_CIPHER *cipher = EVP_aes_256_cbc();
     EVP_CIPHER_CTX ctx;
@@ -103,9 +104,18 @@ bool KeyUtil::encrypt(FILE *in, FILE *out, const byte *key, const byte *iv, cons
     byte *ibuf = (byte *)malloc(AES_BLOCK_SIZE);
     byte *obuf = (byte *)malloc(AES_BLOCK_SIZE + EVP_CIPHER_block_size(cipher));
 
+    // calac the SHA-1 of the source
+    SHA_CTX shaCtx;
+    if (sha)
+        SHA1_Init(&shaCtx);
+
     // read in buffer
     int ilen, olen, ret;
     while ((ilen = fread(ibuf, 1, AES_BLOCK_SIZE, in)) > 0) {
+        // update SHA-1
+        if (sha)
+            SHA1_Update(&shaCtx, ibuf, ilen);
+
         // encrypt or decrypt depends on ctx
         ret = EVP_CipherUpdate(&ctx, obuf, &olen, ibuf, ilen);
         if (ret != 1) {
@@ -115,10 +125,16 @@ bool KeyUtil::encrypt(FILE *in, FILE *out, const byte *key, const byte *iv, cons
             EVP_CIPHER_CTX_cleanup(&ctx);
             return false;
         }
+
         // write to output file
         fwrite(obuf, 1, olen, out);
     }
     // done reading
+
+    // finalize SHA-1
+    if (sha){
+        SHA1_Final(sha, &shaCtx);
+    }
 
     // clear up any last bytes left in the output buffer
     ret = EVP_CipherFinal_ex(&ctx, obuf, &olen);
@@ -139,7 +155,7 @@ bool KeyUtil::encrypt(FILE *in, FILE *out, const byte *key, const byte *iv, cons
     return true;
 }
 
-QString KeyUtil::encrypt(const QString fileName, QString &errMsg)
+QString KeyUtil::encrypt(const QString fileName, QString &errMsg, byte *sha)
 {
     QString result = "";
 
@@ -160,7 +176,7 @@ QString KeyUtil::encrypt(const QString fileName, QString &errMsg)
     out = _wfopen(outWc, L"wb");
 #endif
 
-    if (encrypt(in, out, _key, _iv, AES_ENCRYPT))
+    if (encrypt(in, out, _key, _iv, AES_ENCRYPT, sha))
         result = outFileName;
     else
         errMsg = fileName + " encrypt failed";

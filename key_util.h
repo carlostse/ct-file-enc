@@ -32,7 +32,7 @@ private:
     void generate();
     void setKey(byte *);
     void setIv(byte *);
-    bool encrypt(FILE *in, FILE *out, const byte *key, const byte *iv, const byte mode);
+    inline bool encrypt(FILE *in, FILE *out, const byte *key, const byte *iv, const byte mode, byte * = NULL);
 public:
     static const int KEY_LENGTH = 32;
     static const int IV_LENGTH = 16;
@@ -41,7 +41,7 @@ public:
     void prepareKeyIv(KeyResult *, const char *);
     static bool isEncFile(const QString);
     static bool isEncFile(const std::string);
-    QString encrypt(const QString fileName, QString &errMsg);
+    QString encrypt(const QString fileName, QString &errMsg, byte * = NULL);
     QString decrypt(const QString fileName, QString &errMsg);
     byte *key();
     byte *iv();

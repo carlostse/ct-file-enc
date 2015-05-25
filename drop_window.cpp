@@ -14,6 +14,7 @@
  */
 #include "drop_window.h"
 #include "key_util.h"
+#include <openssl/sha.h>
 
 namespace ct
 {
@@ -36,12 +37,6 @@ DropWindow::DropWindow(const char *keyFile)
     // widgets
     _dropArea = new DropArea(QSize(250, 180 - MENU_H), this);
     _dropArea->setText(tr("Drop the file here to encrypt / decrypt"));
-
-    // debug
-//    QPalette Pal(palette());
-//    Pal.setColor(QPalette::Background, Qt::black);
-//    _dropArea->setAutoFillBackground(true);
-//    _dropArea->setPalette(Pal);
 
     // prepare key
     KeyResult result;
@@ -85,13 +80,12 @@ DropWindow::~DropWindow()
 
 void DropWindow::droppedFiles(const QList<QUrl> list)
 {
-    QString errMsg;
+    QString url, fileName, outFileName, out, errMsg;
     std::string action;
 
     for (int i = 0; i < list.size(); i++) {
-        QString url = list.at(i).path(),
-                fileName = url.mid(1, url.length() - 1),
-                outFileName;
+        url = list.at(i).path();
+        fileName = url.mid(1, url.length() - 1);
 
         if (KeyUtil::isEncFile(fileName)){
             action = "dec";
@@ -102,7 +96,7 @@ void DropWindow::droppedFiles(const QList<QUrl> list)
         }
         qDebug() << "file: " << fileName << " [" << QString::fromStdString(action) << "] -> " << outFileName;
 
-        QString out = outFileName.mid(outFileName.lastIndexOf("/") + 1, outFileName.length() - 1);
+        out = outFileName.mid(outFileName.lastIndexOf("/") + 1, outFileName.length() - 1);
         _msgBox->appendPlainText(getLock(action == "enc").append(" ").append(out));
 
         if (errMsg.length() > 0)
@@ -113,6 +107,8 @@ void DropWindow::droppedFiles(const QList<QUrl> list)
 void DropWindow::helpAbout()
 {
     std::cout << "about" << std::endl;
+//    QMessageBox::aboutQt(this, tr("About"));
+    QDialog(this);
 }
 
 QString DropWindow::getLock(const bool locked)
