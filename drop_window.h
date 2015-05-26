@@ -17,6 +17,9 @@
 #include "drop_area.h"
 #include "key_util.h"
 
+#define WIN_H 260
+#define WIN_W 260
+#define MSG_H 70
 #define MENU_H 20
 
 namespace ct

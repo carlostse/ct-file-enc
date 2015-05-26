@@ -23,7 +23,7 @@ DropWindow::DropWindow(const char *keyFile)
     QSize size;
 
     setWindowTitle(tr("CT File Encrypt %1").arg(__VER__));
-    size = QSize(250, 250);
+    size = QSize(WIN_W, WIN_H);
     setMinimumSize(size);
     setMaximumSize(size);
     _keyFile = keyFile;
@@ -35,8 +35,14 @@ DropWindow::DropWindow(const char *keyFile)
     QAction *actAbout = mainHelp->addAction(tr("About"));
 
     // widgets
-    _dropArea = new DropArea(QSize(250, 180 - MENU_H), this);
+    _dropArea = new DropArea(QSize(WIN_W, WIN_H - MSG_H - MENU_H), this);
     _dropArea->setText(tr("Drop the file here to encrypt / decrypt"));
+
+    // debug only
+//    QPalette pal(_dropArea->palette());
+//    pal.setColor(QPalette::Background, Qt::black);
+//    _dropArea->setAutoFillBackground(true);
+//    _dropArea->setPalette(pal);
 
     // prepare key
     KeyResult result;
@@ -53,7 +59,7 @@ DropWindow::DropWindow(const char *keyFile)
     }
 
     _msgBox = new QPlainTextEdit(this);
-    size = QSize(250, 70);
+    size = QSize(WIN_W, MSG_H);
     _msgBox->setMinimumSize(size);
     _msgBox->setMaximumSize(size);
     _msgBox->setFont(QFont("Segoe UI Symbol"));
