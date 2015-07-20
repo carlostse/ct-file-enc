@@ -12,11 +12,13 @@ TARGET = ct_file_enc
 TEMPLATE = app
 
 win32 {
+    DEFINES += WIN32
     INCLUDEPATH += C:/OpenSSL-Win32/include
 }
 
 win32-g++ {
-    QMAKE_CXXFLAGS_DEBUG += -O0
+    QMAKE_CXXFLAGS += -std=gnu++11 -Wno-unknown-pragmas -Wno-switch -Wno-unused-result
+    QMAKE_CXXFLAGS_DEBUG += -O0 -Wall -g
     QMAKE_CXXFLAGS_RELEASE += -O2
     LIBS += -luserenv -LC:/OpenSSL-Win32 -leay32 -lssl32
 }
@@ -24,14 +26,14 @@ win32-g++ {
 HEADERS += constant.h \
     byte_array.h \
     util.h \
-    key_util.h \
+    master_key.h \
     drop_area.h \
     drop_window.h
 
 SOURCES += main.cpp\
     byte_array.cpp \
     util.cpp \
-    key_util.cpp \
+    master_key.cpp \
     drop_area.cpp \
     drop_window.cpp
 

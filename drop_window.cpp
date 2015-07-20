@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 #include "drop_window.h"
-#include "key_util.h"
+#include "master_key.h"
 #include <openssl/sha.h>
 
 namespace ct
@@ -46,8 +46,8 @@ DropWindow::DropWindow(const char *keyFile)
 
     // prepare key
     KeyResult result;
-    _keyUtil = new KeyUtil();
-    _keyUtil->prepareKeyIv(&result, _keyFile);
+    _masterKey = new MasterKey();
+    _masterKey->prepare(&result, _keyFile);
 
     QString message = (result.type == TYPE_KEY_FILE_LOAD? tr("Load Key: "): tr("New Key: "));
     message.append(_keyFile).append("\n");
@@ -79,7 +79,7 @@ DropWindow::DropWindow(const char *keyFile)
 
 DropWindow::~DropWindow()
 {
-    delete _keyUtil;
+    delete _masterKey;
     delete _dropArea;
     delete _msgBox;
 }
@@ -93,12 +93,12 @@ void DropWindow::droppedFiles(const QList<QUrl> list)
         url = list.at(i).path();
         fileName = url.mid(1, url.length() - 1);
 
-        if (KeyUtil::isEncFile(fileName)){
+        if (MasterKey::isEncFile(fileName)){
             action = "dec";
-            outFileName = _keyUtil->decrypt(fileName, errMsg);
+            outFileName = _masterKey->decrypt(fileName, errMsg);
         } else {
             action = "enc";
-            outFileName = _keyUtil->encrypt(fileName, errMsg);
+            outFileName = _masterKey->encrypt(fileName, errMsg);
         }
         qDebug() << "file: " << fileName << " [" << QString::fromStdString(action) << "] -> " << outFileName;
 

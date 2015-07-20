@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "key_util.h"
+#include "master_key.h"
 #include <openssl/rand.h>
 #include <openssl/aes.h>
 #include <openssl/evp.h>
@@ -20,13 +20,13 @@
 
 namespace ct
 {
-KeyUtil::KeyUtil()
+MasterKey::MasterKey()
 {
     _key = NULL;
     _iv = NULL;
 }
 
-KeyUtil::~KeyUtil()
+MasterKey::~MasterKey()
 {
     if (_key){
         free(_key);
@@ -39,62 +39,62 @@ KeyUtil::~KeyUtil()
     }
 }
 
-void KeyUtil::prepareKeyIv(KeyResult *result, const char *keyFile)
+void MasterKey::prepare(KeyResult *result, const char *keyFile)
 {
     std::cout << "key file: " << keyFile << std::endl;
 
-    if (isKeyExists(keyFile)){
+    if (exists(keyFile)){
         result->type = TYPE_KEY_FILE_LOAD;
         std::cout << "load from key file" << std::endl;
 
         ByteArray *array = Util::readFile(keyFile);
-        setKey((byte *)malloc(KeyUtil::KEY_LENGTH));
-        setIv((byte *)malloc(KeyUtil::IV_LENGTH));
-        memcpy(_key, array->data(), KeyUtil::KEY_LENGTH);
-        memcpy(_iv, &array->data()[KeyUtil::KEY_LENGTH], KeyUtil::IV_LENGTH);
+        setKey((byte *)malloc(KEY_LENGTH));
+        setIv((byte *)malloc(IV_LENGTH));
+        memcpy(_key, array->data(), KEY_LENGTH);
+        memcpy(_iv, &array->data()[KEY_LENGTH], IV_LENGTH);
         delete array;
 
     } else {
         result->type = TYPE_KEY_FILE_SAVE;
         generate();
         // save to key file
-        ByteArray array(KeyUtil::KEY_LENGTH + KeyUtil::IV_LENGTH);
-        memcpy(array.data(), _key, KeyUtil::KEY_LENGTH);
-        memcpy(&array.data()[KeyUtil::KEY_LENGTH], _iv, KeyUtil::IV_LENGTH);
+        ByteArray array(KEY_LENGTH + IV_LENGTH);
+        memcpy(array.data(), _key, KEY_LENGTH);
+        memcpy(&array.data()[KEY_LENGTH], _iv, IV_LENGTH);
         Util::writeFile(keyFile, &array);
         std::cout << "save new key file" << std::endl;
     }
-    result->identity = Util::hexString(_key, KeyUtil::KEY_LENGTH);
+    result->identity = Util::hexString(_key, KEY_LENGTH);
 }
 
-bool KeyUtil::isKeyExists(const char *keyFile)
+bool MasterKey::exists(const char *keyFile) const
 {
     return Util::isFileExists(keyFile);
 }
 
-void KeyUtil::generate()
+void MasterKey::generate()
 {
     //std::cout << "generate key" << std::endl;
-    setKey((byte *)malloc(KeyUtil::KEY_LENGTH));
-    RAND_bytes(_key, KeyUtil::KEY_LENGTH);
+    setKey((byte *)malloc(KEY_LENGTH));
+    RAND_bytes(_key, KEY_LENGTH);
 
     //std::cout << "generate iv" << std::endl;
-    setIv((byte *)malloc(KeyUtil::IV_LENGTH));
-    RAND_bytes(_iv, KeyUtil::IV_LENGTH);
+    setIv((byte *)malloc(IV_LENGTH));
+    RAND_bytes(_iv, IV_LENGTH);
 }
 
-bool KeyUtil::isEncFile(const QString fileName)
+bool MasterKey::isEncFile(const QString fileName)
 {
     int extLen = fileName.length() - strlen(KEY_ENC_EXT);
     return fileName.lastIndexOf(KEY_ENC_EXT) == extLen;
 }
 
-bool KeyUtil::isEncFile(const std::string fileName)
+bool MasterKey::isEncFile(const std::string fileName)
 {
     return fileName.find_last_of(KEY_ENC_EXT) == fileName.length() - 1;
 }
 
-bool KeyUtil::encrypt(FILE *in, FILE *out, const byte *key, const byte *iv, const byte mode, byte *sha)
+bool MasterKey::encrypt(FILE *in, FILE *out, const byte *key, const byte *iv, const byte mode, byte *sha)
 {
     const EVP_CIPHER *cipher = EVP_aes_256_cbc();
     EVP_CIPHER_CTX ctx;
@@ -155,7 +155,7 @@ bool KeyUtil::encrypt(FILE *in, FILE *out, const byte *key, const byte *iv, cons
     return true;
 }
 
-QString KeyUtil::encrypt(const QString fileName, QString &errMsg, byte *sha)
+QString MasterKey::encrypt(const QString fileName, QString &errMsg, byte *sha)
 {
     QString result = "";
 
@@ -186,7 +186,7 @@ QString KeyUtil::encrypt(const QString fileName, QString &errMsg, byte *sha)
     return result;
 }
 
-QString KeyUtil::decrypt(const QString fileName, QString &errMsg)
+QString MasterKey::decrypt(const QString fileName, QString &errMsg)
 {
     QString result = "";
 
@@ -220,12 +220,14 @@ QString KeyUtil::decrypt(const QString fileName, QString &errMsg)
     return result;
 }
 
-byte *KeyUtil::key()
+#pragma region setters and getters
+
+byte *MasterKey::key()
 {
     return this->_key;
 }
 
-void KeyUtil::setKey(byte *b)
+void MasterKey::setKey(byte *b)
 {
     if (_key){
         std::cout << "delete old key" << std::endl;
@@ -234,12 +236,12 @@ void KeyUtil::setKey(byte *b)
     _key = b;
 }
 
-byte *KeyUtil::iv()
+byte *MasterKey::iv()
 {
     return this->_iv;
 }
 
-void KeyUtil::setIv(byte *b)
+void MasterKey::setIv(byte *b)
 {
     if (_iv){
         std::cout << "delete old iv" << std::endl;
@@ -247,4 +249,7 @@ void KeyUtil::setIv(byte *b)
     }
     _iv = b;
 }
+
+#pragma endregion
+
 }

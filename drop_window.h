@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 #include "drop_area.h"
-#include "key_util.h"
+#include "master_key.h"
 
 #define WIN_H 260
 #define WIN_W 260
@@ -38,7 +38,7 @@ public slots:
 
 private:
     const char *_keyFile;
-    KeyUtil *_keyUtil;
+    MasterKey *_masterKey;
     DropArea *_dropArea;
     QPlainTextEdit *_msgBox;
     QString getLock(const bool);

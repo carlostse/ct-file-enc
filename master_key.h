@@ -1,5 +1,5 @@
-#ifndef KEYUTIL_H
-#define KEYUTIL_H
+#ifndef MASTERKEY_H
+#define MASTERKEY_H
 /* Copyright 2015 Carlos Tse <copperoxide@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,11 +24,11 @@ typedef struct {
     std::string identity;
 } KeyResult;
 
-class KeyUtil
+class MasterKey
 {
 private:
     byte *_key, *_iv;
-    bool isKeyExists(const char *);
+    bool exists(const char *) const;
     void generate();
     void setKey(byte *);
     void setIv(byte *);
@@ -36,9 +36,9 @@ private:
 public:
     static const int KEY_LENGTH = 32;
     static const int IV_LENGTH = 16;
-    KeyUtil();
-    ~KeyUtil();
-    void prepareKeyIv(KeyResult *, const char *);
+    MasterKey();
+    ~MasterKey();
+    void prepare(KeyResult *, const char *);
     static bool isEncFile(const QString);
     static bool isEncFile(const std::string);
     QString encrypt(const QString fileName, QString &errMsg, byte * = NULL);
@@ -48,4 +48,4 @@ public:
 };
 }
 
-#endif // KEYUTIL_H
+#endif // MASTERKEY_H

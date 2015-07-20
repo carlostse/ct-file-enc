@@ -33,8 +33,10 @@ typedef unsigned char byte;
 #ifdef WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <userenv.h>
 #else
-typedef unsigned long DWORD;
+#define MAX_PATH 260
+typedef unsigned long DWORD
 #endif
 
 #endif // CONSTANT_H

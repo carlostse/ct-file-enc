@@ -13,15 +13,9 @@
  * limitations under the License.
  */
 #include "util.h"
-#include <sys/stat.h>
+//#include <sys/stat.h>
 #include <openssl/md5.h>
 #include <openssl/sha.h>
-
-#ifdef WIN32
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <userenv.h>
-#endif
 
 namespace ct
 {
@@ -61,8 +55,10 @@ byte *Util::iv(std::string str)
 
 bool Util::isFileExists(const char *fileName)
 {
-    struct stat buf;
-    return stat(fileName, &buf) != -1;
+//    struct stat buf;
+//    return stat(fileName, &buf) != -1;
+    std::ifstream file(fileName);
+    return file.good();
 }
 
 ByteArray *Util::readFile(const char* fileName)
