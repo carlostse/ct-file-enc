@@ -1,4 +1,8 @@
-Makefile*
 *.user
+*.opensdf
+*.sdf
+*.suo
+Makefile*
 debug/
 release/
+msvc/ipch/

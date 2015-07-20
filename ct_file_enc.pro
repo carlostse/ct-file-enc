@@ -20,7 +20,8 @@ win32-g++ {
     QMAKE_CXXFLAGS += -std=gnu++11 -Wno-unknown-pragmas -Wno-switch -Wno-unused-result
     QMAKE_CXXFLAGS_DEBUG += -O0 -Wall -g
     QMAKE_CXXFLAGS_RELEASE += -O2
-    LIBS += -luserenv -LC:/OpenSSL-Win32 -leay32 -lssl32
+    QMAKE_LIBDIR += C:/OpenSSL-Win32
+    LIBS += -luserenv -leay32 -lssl32
 }
 
 HEADERS += constant.h \

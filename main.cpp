@@ -18,9 +18,8 @@
 int main(int argc, char *argv[])
 {
     // get the key file path
-    DWORD size = MAX_PATH;
-    char keyFile[size];
-    ct::Util::homePath(keyFile, size);
+    char keyFile[MAX_PATH];
+    ct::Util::homePath(keyFile, MAX_PATH);
     strcat(keyFile, "\\");
     strcat(keyFile, KEY_FILE_NAME);
 
