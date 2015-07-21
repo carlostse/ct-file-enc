@@ -2,6 +2,7 @@
 *.opensdf
 *.sdf
 *.suo
+*.pdb
 Makefile*
 debug/
 release/

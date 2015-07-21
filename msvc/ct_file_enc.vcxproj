@@ -42,11 +42,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">bin\$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Platform)\$(Configuration)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ct_file_enc</TargetName>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreImportLibrary>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">bin\$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Platform)\$(Configuration)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ct_file_enc</TargetName>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreImportLibrary>
@@ -56,20 +56,17 @@
     <ClCompile>
       <AdditionalIncludeDirectories>C:\OpenSSL-Win32\include;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include;$(QTDIR)\include\ActiveQt;"debug";$(QTDIR)\mkspecs\default;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zm200 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
-      <AssemblerListingLocation>debug\</AssemblerListingLocation>
-      <BrowseInformation>false</BrowseInformation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN32;QT_DLL;QT_GUI_LIB;QT_CORE_LIB;QT_HAVE_MMX;QT_HAVE_3DNOW;QT_HAVE_SSE;QT_HAVE_MMXEXT;QT_HAVE_SSE2;QT_THREAD_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessToFile>false</PreprocessToFile>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <AdditionalDependencies>libeay32MDd.lib;ssleay32MDd.lib;userenv.lib;$(QTDIR)\lib\qtmaind.lib;$(QTDIR)\lib\QtGuid4.lib;$(QTDIR)\lib\QtCored4.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -96,19 +93,17 @@
     <ClCompile>
       <AdditionalIncludeDirectories>C:\OpenSSL-Win32\include;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include;$(QTDIR)\include\ActiveQt;"release";$(QTDIR)\mkspecs\default;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zm200 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
-      <AssemblerListingLocation>release\</AssemblerListingLocation>
-      <BrowseInformation>false</BrowseInformation>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Full</Optimization>
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN32;QT_DLL;QT_NO_DEBUG;QT_GUI_LIB;QT_CORE_LIB;QT_HAVE_MMX;QT_HAVE_3DNOW;QT_HAVE_SSE;QT_HAVE_MMXEXT;QT_HAVE_SSE2;QT_THREAD_SUPPORT;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessToFile>false</PreprocessToFile>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <AdditionalDependencies>libeay32MD.lib;ssleay32MD.lib;userenv.lib;$(QTDIR)\lib\qtmain.lib;$(QTDIR)\lib\QtGui4.lib;$(QTDIR)\lib\QtCore4.lib;%(AdditionalDependencies)</AdditionalDependencies>

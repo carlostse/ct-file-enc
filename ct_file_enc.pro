@@ -12,7 +12,6 @@ TARGET = ct_file_enc
 TEMPLATE = app
 
 win32 {
-    DEFINES += WIN32
     INCLUDEPATH += C:/OpenSSL-Win32/include
 }
 
