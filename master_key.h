@@ -32,7 +32,8 @@ private:
     void generate();
     void setKey(byte *);
     void setIv(byte *);
-    inline bool encrypt(FILE *in, FILE *out, const byte *key, const byte *iv, const byte mode, byte * = NULL);
+    bool encrypt(FILE *in, FILE *out, const byte *key, const byte *iv, const byte mode, byte * = NULL);
+    void openFile(FILE **in, FILE **out, const QString &inFileName, const QString &outFileName);
 public:
     static const int KEY_LENGTH = 32;
     static const int IV_LENGTH = 16;

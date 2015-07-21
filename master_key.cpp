@@ -149,6 +149,18 @@ bool MasterKey::encrypt(FILE *in, FILE *out, const byte *key, const byte *iv, co
     return true;
 }
 
+void MasterKey::openFile(FILE **in, FILE **out, const QString &inFileName, const QString &outFileName)
+{
+#ifdef WIN32
+    const wchar_t
+    *inWc = (const wchar_t *)inFileName.utf16(),
+    *outWc = (const wchar_t *)outFileName.utf16();
+
+    *in = _wfopen(inWc, L"rb");
+    *out = _wfopen(outWc, L"wb");
+#endif
+}
+
 QString MasterKey::encrypt(const QString fileName, QString &errMsg, byte *sha)
 {
     QString result = "";
@@ -161,14 +173,7 @@ QString MasterKey::encrypt(const QString fileName, QString &errMsg, byte *sha)
     QString outFileName = fileName + QString(KEY_ENC_EXT);
 
     FILE *in, *out;
-#ifdef WIN32
-    const wchar_t
-    *inWc = (const wchar_t *)fileName.utf16(),
-    *outWc = (const wchar_t *)outFileName.utf16();
-
-    in = _wfopen(inWc, L"rb");
-    out = _wfopen(outWc, L"wb");
-#endif
+    openFile(&in, &out, fileName, outFileName);
 
     if (encrypt(in, out, _key, _iv, AES_ENCRYPT, sha))
         result = outFileName;
@@ -197,14 +202,7 @@ QString MasterKey::decrypt(const QString fileName, QString &errMsg)
     QString outFileName = fileName.mid(0, fileName.length() - strlen(KEY_ENC_EXT));
 
     FILE *in, *out;
-#ifdef WIN32
-    const wchar_t
-    *inWc = (const wchar_t *)fileName.utf16(),
-    *outWc = (const wchar_t *)outFileName.utf16();
-
-    in = _wfopen(inWc, L"rb");
-    out = _wfopen(outWc, L"wb");
-#endif
+    openFile(&in, &out, fileName, outFileName);
 
     if (encrypt(in, out, _key, _iv, AES_DECRYPT))
         result = outFileName;
