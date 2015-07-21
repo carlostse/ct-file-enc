@@ -18,10 +18,10 @@
 int main(int argc, char *argv[])
 {
     // get the key file path
-    char keyFile[MAX_PATH];
+    TCHAR keyFile[MAX_PATH];
     ct::Util::homePath(keyFile, MAX_PATH);
-    strcat(keyFile, "\\");
-    strcat(keyFile, KEY_FILE_NAME);
+    _tcscat(keyFile, TEXT("\\"));
+    _tcscat(keyFile, KEY_FILE_NAME);
 
     QApplication a(argc, argv);
     ct::DropWindow w(keyFile);

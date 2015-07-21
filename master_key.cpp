@@ -39,7 +39,7 @@ MasterKey::~MasterKey()
     }
 }
 
-void MasterKey::prepare(KeyResult *result, const char *keyFile)
+void MasterKey::prepare(KeyResult *result, LPCTSTR keyFile)
 {
     std::cout << "key file: " << keyFile << std::endl;
 
@@ -53,7 +53,6 @@ void MasterKey::prepare(KeyResult *result, const char *keyFile)
         memcpy(_key, array->data(), KEY_LENGTH);
         memcpy(_iv, &array->data()[KEY_LENGTH], IV_LENGTH);
         delete array;
-
     } else {
         result->type = TYPE_KEY_FILE_SAVE;
         generate();
@@ -67,7 +66,7 @@ void MasterKey::prepare(KeyResult *result, const char *keyFile)
     result->identity = Util::hexString(_key, KEY_LENGTH);
 }
 
-bool MasterKey::exists(const char *keyFile) const
+bool MasterKey::exists(LPCTSTR keyFile) const
 {
     return Util::isFileExists(keyFile);
 }
@@ -87,11 +86,6 @@ bool MasterKey::isEncFile(const QString fileName)
 {
     int extLen = fileName.length() - strlen(KEY_ENC_EXT);
     return fileName.lastIndexOf(KEY_ENC_EXT) == extLen;
-}
-
-bool MasterKey::isEncFile(const std::string fileName)
-{
-    return fileName.find_last_of(KEY_ENC_EXT) == fileName.length() - 1;
 }
 
 bool MasterKey::encrypt(FILE *in, FILE *out, const byte *key, const byte *iv, const byte mode, byte *sha)
@@ -251,5 +245,4 @@ void MasterKey::setIv(byte *b)
 }
 
 #pragma endregion
-
 }

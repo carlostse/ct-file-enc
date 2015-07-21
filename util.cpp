@@ -53,7 +53,7 @@ byte *Util::iv(std::string str)
     return digest;
 }
 
-bool Util::isFileExists(const char *fileName)
+bool Util::isFileExists(LPCTSTR fileName)
 {
 //    struct stat buf;
 //    return stat(fileName, &buf) != -1;
@@ -61,7 +61,7 @@ bool Util::isFileExists(const char *fileName)
     return file.good();
 }
 
-ByteArray *Util::readFile(const char* fileName)
+ByteArray *Util::readFile(LPCTSTR fileName)
 {
     if (!isFileExists(fileName)){
         std::cout << fileName << " does not exists" << std::endl;
@@ -70,7 +70,7 @@ ByteArray *Util::readFile(const char* fileName)
 
     std::ifstream file(fileName);
     file.seekg(0, std::ios::end);
-    size_t len = file.tellg();
+    size_t len = (size_t) file.tellg(); // the key file is small
     file.seekg(0, std::ios::beg);
 
     if (len < 1){
@@ -85,9 +85,9 @@ ByteArray *Util::readFile(const char* fileName)
     return array;
 }
 
-void Util::writeFile(const char* fileName, ByteArray *data)
+void Util::writeFile(LPCTSTR fileName, ByteArray *data)
 {
-    std::fstream file(fileName, std::ios::out | std::ios::binary);
+    std::ofstream file(fileName, std::ios::out | std::ios::binary);
     file.seekp(0);
     file.write ((char*)data->data(), data->size());
     file.close();
@@ -105,14 +105,12 @@ int Util::lastIndexOf(const char *str, char c)
     return -1;
 }
 
-bool Util::homePath(char *path, DWORD size)
+bool Util::homePath(TCHAR *path, DWORD size)
 {
 #ifdef WIN32
     HANDLE hToken;
-    wchar_t wc[MAX_PATH];
     return OpenProcessToken(GetCurrentProcess(), TOKEN_READ, &hToken) &&
-           GetUserProfileDirectory(hToken, wc, &size) &&
-           WideCharToMultiByte(CP_UTF8, 0, wc, MAX_PATH, path, size, 0, 0) > 0;
+           GetUserProfileDirectory(hToken, path, &size);
 #endif
 }
 /*

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 #define __VER__ "1.0.0"
-#define KEY_FILE_NAME "key"
+#define KEY_FILE_NAME TEXT("key")
 #define KEY_ENC_EXT ".enc"
 #define KEY_DEC_EXT ".dec"
 
@@ -34,9 +34,13 @@ typedef unsigned char byte;
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <userenv.h>
+#include <tchar.h>
 #else
 #define MAX_PATH 260
-typedef unsigned long DWORD
+#define TEXT(str) str
+typedef unsigned long DWORD;
+typedef char TCHAR;
+typedef const TCHAR* LPCTSTR;
 #endif
 
 #endif // CONSTANT_H

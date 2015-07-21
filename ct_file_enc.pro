@@ -16,6 +16,7 @@ win32 {
 }
 
 win32-g++ {
+    DEFINES += _UNICODE
     QMAKE_CXXFLAGS += -std=gnu++11 -Wno-unknown-pragmas -Wno-switch -Wno-unused-result
     QMAKE_CXXFLAGS_DEBUG += -O0 -Wall -g
     QMAKE_CXXFLAGS_RELEASE += -O2

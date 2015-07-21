@@ -18,7 +18,7 @@
 
 namespace ct
 {
-DropWindow::DropWindow(const char *keyFile)
+DropWindow::DropWindow(LPCTSTR keyFile)
 {
     QSize size;
 
@@ -50,7 +50,11 @@ DropWindow::DropWindow(const char *keyFile)
     _masterKey->prepare(&result, _keyFile);
 
     QString message = (result.type == TYPE_KEY_FILE_LOAD? tr("Load Key: "): tr("New Key: "));
+#ifdef _UNICODE
+    message.append(QString::fromWCharArray(_keyFile)).append("\n");
+#else
     message.append(_keyFile).append("\n");
+#endif
     message.append(tr("Fingerprint: "));
     message.append(QString::fromStdString(result.identity).mid(0, 24));
     if (result.type == TYPE_KEY_FILE_SAVE){

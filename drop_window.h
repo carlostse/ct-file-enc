@@ -29,7 +29,7 @@ class DropWindow : public QWidget
     Q_OBJECT
 
 public:
-    DropWindow(const char *);
+    DropWindow(LPCTSTR);
     virtual ~DropWindow();
 
 public slots:
@@ -37,7 +37,7 @@ public slots:
     void helpAbout();
 
 private:
-    const char *_keyFile;
+    LPCTSTR _keyFile;
     MasterKey *_masterKey;
     DropArea *_dropArea;
     QPlainTextEdit *_msgBox;

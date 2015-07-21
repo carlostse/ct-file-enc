@@ -28,7 +28,7 @@ class MasterKey
 {
 private:
     byte *_key, *_iv;
-    bool exists(const char *) const;
+    bool exists(LPCTSTR) const;
     void generate();
     void setKey(byte *);
     void setIv(byte *);
@@ -38,9 +38,8 @@ public:
     static const int IV_LENGTH = 16;
     MasterKey();
     ~MasterKey();
-    void prepare(KeyResult *, const char *);
+    void prepare(KeyResult *, LPCTSTR);
     static bool isEncFile(const QString);
-    static bool isEncFile(const std::string);
     QString encrypt(const QString fileName, QString &errMsg, byte * = NULL);
     QString decrypt(const QString fileName, QString &errMsg);
     byte *key();
