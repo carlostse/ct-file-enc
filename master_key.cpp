@@ -82,10 +82,17 @@ void MasterKey::generate()
     RAND_bytes(_iv, IV_LENGTH);
 }
 
-bool MasterKey::isEncFile(const QString fileName)
+bool MasterKey::isEncFile(LPCTSTR fileName)
 {
-    int extLen = fileName.length() - strlen(KEY_ENC_EXT);
-    return fileName.lastIndexOf(KEY_ENC_EXT) == extLen;
+    size_t lenExt = _tcslen(KEY_ENC_EXT),
+           lenFilename = _tcslen(fileName);
+
+    if (lenFilename < lenExt) return false;
+
+    TCHAR ext[KEY_EXT_LEN + 1];
+    _tcscpy(ext, fileName + lenFilename - lenExt);
+
+    return _tcscmp(ext, KEY_ENC_EXT) == 0;
 }
 
 bool MasterKey::encrypt(FILE *in, FILE *out, const byte *key, const byte *iv, const byte mode, byte *sha)
@@ -149,66 +156,71 @@ bool MasterKey::encrypt(FILE *in, FILE *out, const byte *key, const byte *iv, co
     return true;
 }
 
-void MasterKey::openFile(FILE **in, FILE **out, const QString &inFileName, const QString &outFileName)
+void MasterKey::openFile(FILE **in, FILE **out, LPCTSTR inFileName, LPCTSTR outFileName)
 {
 #ifdef WIN32
-    const wchar_t
-    *inWc = (const wchar_t *)inFileName.utf16(),
-    *outWc = (const wchar_t *)outFileName.utf16();
-
-    *in = _wfopen(inWc, L"rb");
-    *out = _wfopen(outWc, L"wb");
+    *in = _wfopen(inFileName, TEXT("rb"));
+    *out = _wfopen(outFileName, TEXT("wb"));
 #endif
 }
 
-QString MasterKey::encrypt(const QString fileName, QString &errMsg, byte *sha)
+TSTRING MasterKey::encrypt(LPCTSTR fileName, TSTRING &errMsg, byte *sha)
 {
-    QString result = "";
+    TSTRING result, inFileName = TSTRING(fileName);
 
-    if (!QFile(fileName).exists()){
-        errMsg = fileName + QString(" does not exists");
+    if (!Util::isFileExists(fileName)){
+        errMsg = inFileName + TEXT(" does not exists");
         return result;
     }
 
-    QString outFileName = fileName + QString(KEY_ENC_EXT);
+    TSTRING outFileName = inFileName + KEY_ENC_EXT;
 
     FILE *in, *out;
-    openFile(&in, &out, fileName, outFileName);
+    openFile(&in, &out, fileName, outFileName.c_str());
 
     if (encrypt(in, out, _key, _iv, AES_ENCRYPT, sha))
         result = outFileName;
     else
-        errMsg = fileName + " encrypt failed";
+        errMsg = inFileName + TEXT(" encrypt failed");
 
     fclose(in);
     fclose(out);
     return result;
 }
 
-QString MasterKey::decrypt(const QString fileName, QString &errMsg)
+TSTRING MasterKey::decrypt(LPCTSTR fileName, TSTRING &errMsg)
 {
-    QString result = "";
+    TSTRING result, inFileName = TSTRING(fileName);
 
-    if (!QFile(fileName).exists()){
-        errMsg = fileName + " does not exists";
+    if (!Util::isFileExists(fileName)){
+        errMsg = inFileName + TEXT(" does not exists");
         return result;
     }
 
     if (!isEncFile(fileName)){
-        errMsg = fileName + " is not an encrypted file";
+        errMsg = inFileName + TEXT(" is not an encrypted file");
         return result;
     }
 
-    QString outFileName = fileName.mid(0, fileName.length() - strlen(KEY_ENC_EXT));
+    // restore original extension (just remove KEY_ENC_EXT)
+    size_t lenExt = _tcslen(KEY_ENC_EXT),
+           lenFileName = _tcslen(fileName),
+           lenOutName = lenFileName - lenExt;
+    TCHAR *outFileName = new TCHAR[lenOutName + 1];
+    memcpy(outFileName, fileName, sizeof(TCHAR) * lenOutName);
+    outFileName[lenOutName] = 0;
 
     FILE *in, *out;
     openFile(&in, &out, fileName, outFileName);
 
     if (encrypt(in, out, _key, _iv, AES_DECRYPT))
         result = outFileName;
+    else
+        errMsg = inFileName + TEXT(" decrypt failed");
 
     fclose(in);
     fclose(out);
+    delete[] outFileName;
     return result;
 }
 

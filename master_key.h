@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <QtCore>
 #include "util.h"
 
 namespace ct
@@ -33,16 +32,16 @@ private:
     void setKey(byte *);
     void setIv(byte *);
     bool encrypt(FILE *in, FILE *out, const byte *key, const byte *iv, const byte mode, byte * = NULL);
-    void openFile(FILE **in, FILE **out, const QString &inFileName, const QString &outFileName);
+    void openFile(FILE **in, FILE **out, LPCTSTR inFileName, LPCTSTR outFileName);
 public:
     static const int KEY_LENGTH = 32;
     static const int IV_LENGTH = 16;
     MasterKey();
     ~MasterKey();
     void prepare(KeyResult *, LPCTSTR);
-    static bool isEncFile(const QString);
-    QString encrypt(const QString fileName, QString &errMsg, byte * = NULL);
-    QString decrypt(const QString fileName, QString &errMsg);
+    static bool isEncFile(LPCTSTR);
+    TSTRING encrypt(LPCTSTR fileName, TSTRING &errMsg, byte * = NULL);
+    TSTRING decrypt(LPCTSTR fileName, TSTRING &errMsg);
     byte *key();
     byte *iv();
 };

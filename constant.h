@@ -15,9 +15,11 @@
  * limitations under the License.
  */
 #define __VER__ "1.0.0"
+
 #define KEY_FILE_NAME TEXT("key")
-#define KEY_ENC_EXT ".enc"
-#define KEY_DEC_EXT ".dec"
+#define KEY_ENC_EXT TEXT(".enc")
+#define KEY_DEC_EXT TEXT(".dec")
+#define KEY_EXT_LEN 4
 
 #define TYPE_KEY_FILE_LOAD 'L'
 #define TYPE_KEY_FILE_SAVE 'S'
@@ -35,12 +37,21 @@ typedef unsigned char byte;
 #include <windows.h>
 #include <userenv.h>
 #include <tchar.h>
+#include <string>
 #else
 #define MAX_PATH 260
 #define TEXT(str) str
 typedef unsigned long DWORD;
 typedef char TCHAR;
 typedef const TCHAR* LPCTSTR;
+#endif
+
+#ifdef _UNICODE
+typedef std::wstring TSTRING;
+#define QStringFromString(str) QString::fromStdWString(str)
+#else
+typedef std::string TSTRING;
+#define QStringFromString(str) QString::fromStdString(str)
 #endif
 
 #endif // CONSTANT_H

@@ -90,27 +90,31 @@ DropWindow::~DropWindow()
 
 void DropWindow::droppedFiles(const QList<QUrl> list)
 {
-    QString url, fileName, outFileName, out, errMsg;
+    QString url, fileName, out;
+    LPCTSTR inFileName;
+    TSTRING outFileName, errMsg;
     std::string action;
 
     for (int i = 0; i < list.size(); i++) {
         url = list.at(i).path();
         fileName = url.mid(1, url.length() - 1);
+        inFileName = fileName.utf16();
 
-        if (MasterKey::isEncFile(fileName)){
+        if (MasterKey::isEncFile(inFileName)){
             action = "dec";
-            outFileName = _masterKey->decrypt(fileName, errMsg);
+            outFileName = _masterKey->decrypt(inFileName, errMsg);
         } else {
             action = "enc";
-            outFileName = _masterKey->encrypt(fileName, errMsg);
+            outFileName = _masterKey->encrypt(inFileName, errMsg);
         }
-        qDebug() << "file: " << fileName << " [" << QString::fromStdString(action) << "] -> " << outFileName;
+        qDebug() << "file: " << fileName << " [" << QString::fromStdString(action) << "] -> "
+                 << QStringFromString(outFileName);
 
-        out = outFileName.mid(outFileName.lastIndexOf("/") + 1, outFileName.length() - 1);
+        out = QStringFromString(outFileName.substr(outFileName.find_last_of('/') + 1, std::string::npos));
         _msgBox->appendPlainText(getLock(action == "enc").append(" ").append(out));
 
         if (errMsg.length() > 0)
-            qDebug() << "error: " << errMsg;
+            qDebug() << "error: " << QStringFromString(errMsg);
     }
 }
 
