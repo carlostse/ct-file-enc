@@ -16,7 +16,7 @@
  */
 #include <string>
 
-#define __VER__ "1.0.0"
+#define __VER__ "1.0.1"
 
 #define KEY_FILE_NAME TEXT("key")
 #define KEY_ENC_EXT TEXT(".enc")

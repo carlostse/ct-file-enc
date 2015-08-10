@@ -26,6 +26,8 @@
 
 namespace ct
 {
+const QString pathL("/"), pathR("\\");
+
 class DropWindow : public QWidget
 {
     Q_OBJECT
@@ -45,6 +47,7 @@ private:
     ClickableLabel *_lblAbout;
     QPlainTextEdit *_txtMsgBox;
     QString getLock(const bool);
+    QString getWarn();
 };
 }
 

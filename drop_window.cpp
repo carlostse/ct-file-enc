@@ -20,13 +20,13 @@ namespace ct
 {
 DropWindow::DropWindow(LPCTSTR keyFile)
 {
-    QSize size;
+    _keyFile = keyFile;
 
+    // window
+    QSize size = QSize(WIN_W, WIN_H);
     setWindowTitle(tr("CT File Encrypt %1").arg(__VER__));
-    size = QSize(WIN_W, WIN_H);
     setMinimumSize(size);
     setMaximumSize(size);
-    _keyFile = keyFile;
 
     // menu
     //QMenuBar *menu = new QMenuBar(this);
@@ -107,6 +107,16 @@ void DropWindow::droppedFiles(const QList<QUrl> list)
         QByteArray arr = fileName.toUtf8();
         inFileName = arr.constData();
 #endif
+
+        if (GetFileAttributes(inFileName) == FILE_ATTRIBUTE_DIRECTORY){
+            qDebug() << fileName << " is a directory";
+            _txtMsgBox->appendPlainText(
+                getWarn().append(" ").append(fileName.replace(pathL, pathR)).
+                append(tr(" is a directory. Skipped."))
+            );
+            continue;
+        }
+
         if (MasterKey::isEncFile(inFileName)){
             action = "dec";
             outFileName = _masterKey->decrypt(inFileName, errMsg);
@@ -175,4 +185,13 @@ QString DropWindow::getLock(const bool locked)
     lock[2] = 0;
     return QString::fromUtf16(lock);
 }
+
+QString DropWindow::getWarn()
+{
+    ushort warn[2];
+    warn[0] = 0x26A0;
+    warn[1] = 0;
+    return QString::fromUtf16(warn);
+}
+
 }
