@@ -29,10 +29,11 @@ DropWindow::DropWindow(LPCTSTR keyFile)
     _keyFile = keyFile;
 
     // menu
-    QMenuBar *menu = new QMenuBar(this);
-    QMenu* mainHelp = new QMenu(tr("Help"));
-    menu->addMenu(mainHelp);
-    QAction *actAbout = mainHelp->addAction(tr("About"));
+    //QMenuBar *menu = new QMenuBar(this);
+    //QMenu* mainHelp = new QMenu(tr("Help"));
+    //menu->addMenu(mainHelp);
+    //QAction *actAbout = mainHelp->addAction(tr("About"));
+    _lblAbout = new ClickableLabel(tr("About"), this);
 
     // widgets
     _dropArea = new DropArea(QSize(WIN_W, WIN_H - MSG_H - MENU_H), this);
@@ -62,30 +63,32 @@ DropWindow::DropWindow(LPCTSTR keyFile)
         message.append(tr("[Warning] Don't lost the key file otherwise you cannot decrypt the files"));
     }
 
-    _msgBox = new QPlainTextEdit(this);
+    _txtMsgBox = new QPlainTextEdit(this);
     size = QSize(WIN_W, MSG_H);
-    _msgBox->setMinimumSize(size);
-    _msgBox->setMaximumSize(size);
-    _msgBox->setFont(QFont("Segoe UI Symbol"));
-    _msgBox->appendPlainText(message);
+    _txtMsgBox->setMinimumSize(size);
+    _txtMsgBox->setMaximumSize(size);
+    _txtMsgBox->setFont(QFont("Segoe UI Symbol"));
+    _txtMsgBox->appendPlainText(message);
 
     // layout
     QVBoxLayout *mainLayout = new QVBoxLayout;
-    mainLayout->setContentsMargins(0, MENU_H, 0 ,0);
+    mainLayout->setContentsMargins(0, PADDING, PADDING, 0);
+    mainLayout->addWidget(_lblAbout, 0, Qt::AlignRight);
     mainLayout->addWidget(_dropArea);
-    mainLayout->addWidget(_msgBox);
+    mainLayout->addWidget(_txtMsgBox);
     setLayout(mainLayout);
 
     // connect signal
     connect(_dropArea, SIGNAL(dropped(const QList<QUrl>)), this, SLOT(droppedFiles(const QList<QUrl>)));
-    connect(actAbout, SIGNAL(triggered()), this, SLOT(helpAbout()));
+    //connect(actAbout, SIGNAL(triggered()), this, SLOT(helpAbout()));
+    connect(_lblAbout, SIGNAL(clicked()), this, SLOT(helpAbout()));
 }
 
 DropWindow::~DropWindow()
 {
     delete _masterKey;
     delete _dropArea;
-    delete _msgBox;
+    delete _txtMsgBox;
 }
 
 void DropWindow::droppedFiles(const QList<QUrl> list)
@@ -114,7 +117,7 @@ void DropWindow::droppedFiles(const QList<QUrl> list)
                  << QStringFromString(outFileName);
 
         out = QStringFromString(outFileName.substr(outFileName.find_last_of('/') + 1, std::string::npos));
-        _msgBox->appendPlainText(getLock(action == "enc").append(" ").append(out));
+        _txtMsgBox->appendPlainText(getLock(action == "enc").append(" ").append(out));
 
         if (errMsg.length() > 0)
             qDebug() << "error: " << QStringFromString(errMsg);

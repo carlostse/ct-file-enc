@@ -1,5 +1,5 @@
-#ifndef DROPWINDOW_H
-#define DROPWINDOW_H
+#ifndef CLICKABLE_LABEL_H
+#define CLICKABLE_LABEL_H
 /* Copyright 2015 Carlos Tse <copperoxide@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,38 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "drop_area.h"
-#include "master_key.h"
-#include "clickable_label.h"
+#include <QtGui>
 
-#define WIN_H 260
-#define WIN_W 260
-#define MSG_H 70
-#define MENU_H 20
-#define PADDING 10
-
-namespace ct
+class ClickableLabel : public QLabel
 {
-class DropWindow : public QWidget
-{
-    Q_OBJECT
-
+Q_OBJECT
 public:
-    DropWindow(LPCTSTR);
-    virtual ~DropWindow();
+    explicit ClickableLabel(const QString& text="", QWidget* parent=0);
+    ~ClickableLabel();
 
-public slots:
-    void droppedFiles(const QList<QUrl> list);
-    void helpAbout();
+protected:
+    void mousePressEvent(QMouseEvent* event);
 
-private:
-    LPCTSTR _keyFile;
-    MasterKey *_masterKey;
-    DropArea *_dropArea;
-    ClickableLabel *_lblAbout;
-    QPlainTextEdit *_txtMsgBox;
-    QString getLock(const bool);
+signals:
+    void clicked();
 };
-}
 
-#endif // DROPWINDOW_H
+#endif

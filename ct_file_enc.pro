@@ -29,6 +29,7 @@ HEADERS += constant.h \
     util.h \
     master_key.h \
     drop_area.h \
+    clickable_label.h \
     drop_window.h
 
 SOURCES += main.cpp\
@@ -36,6 +37,7 @@ SOURCES += main.cpp\
     util.cpp \
     master_key.cpp \
     drop_area.cpp \
+    clickable_label.cpp \
     drop_window.cpp
 
 RC_FILE += resource.rc
