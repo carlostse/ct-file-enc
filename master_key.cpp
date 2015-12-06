@@ -158,9 +158,12 @@ bool MasterKey::encrypt(FILE *in, FILE *out, const byte *key, const byte *iv, co
 
 void MasterKey::openFile(FILE **in, FILE **out, LPCTSTR inFileName, LPCTSTR outFileName)
 {
-#ifdef WIN32
+#ifdef UNICODE
     *in = _wfopen(inFileName, TEXT("rb"));
     *out = _wfopen(outFileName, TEXT("wb"));
+#else
+    *in = fopen(inFileName, TEXT("rb"));
+    *out = fopen(outFileName, TEXT("wb"));
 #endif
 }
 

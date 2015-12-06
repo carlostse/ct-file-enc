@@ -14,6 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include <string>
+
 #define __VER__ "1.0.0"
 
 #define KEY_FILE_NAME TEXT("key")
@@ -39,11 +41,14 @@ typedef unsigned char byte;
 #include <tchar.h>
 #include <string>
 #else
-#define MAX_PATH 260
 #define TEXT(str) str
+#define _tcscat(dest, str) strcpy(dest, str)
 typedef unsigned long DWORD;
 typedef char TCHAR;
 typedef const TCHAR* LPCTSTR;
+#ifndef MAX_PATH
+#define MAX_PATH 260
+#endif
 #endif
 
 #ifdef _UNICODE

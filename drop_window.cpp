@@ -98,8 +98,11 @@ void DropWindow::droppedFiles(const QList<QUrl> list)
     for (int i = 0; i < list.size(); i++) {
         url = list.at(i).path();
         fileName = url.mid(1, url.length() - 1);
+#ifdef UNICODE
         inFileName = fileName.utf16();
-
+#else
+        inFileName = fileName.toUtf8(); // for MinGW, thus not toLocal8Bit
+#endif
         if (MasterKey::isEncFile(inFileName)){
             action = "dec";
             outFileName = _masterKey->decrypt(inFileName, errMsg);
