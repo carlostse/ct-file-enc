@@ -39,7 +39,6 @@ typedef unsigned char byte;
 #include <windows.h>
 #include <userenv.h>
 #include <tchar.h>
-#include <string>
 #else
 #define TEXT(str) str
 #define _tcscat(dest, str) strcpy(dest, str)

@@ -104,7 +104,8 @@ void DropWindow::droppedFiles(const QList<QUrl> list)
 #ifdef UNICODE
         inFileName = fileName.utf16();
 #else
-        inFileName = fileName.toUtf8(); // for MinGW, thus not toLocal8Bit
+        QByteArray arr = fileName.toUtf8();
+        inFileName = arr.constData();
 #endif
         if (MasterKey::isEncFile(inFileName)){
             action = "dec";
