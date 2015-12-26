@@ -41,7 +41,10 @@ typedef unsigned char byte;
 #include <tchar.h>
 #else
 #define TEXT(str) str
-#define _tcscat(dest, str) strcpy(dest, str)
+#define _tcslen(txt) strlen(txt)
+#define _tcscpy(dest, src) strcpy(dest, src)
+#define _tcscat(dest, src) strcat(dest, src)
+#define _tcscmp(txt1, txt2) strcmp(txt1, txt2)
 typedef unsigned long DWORD;
 typedef char TCHAR;
 typedef const TCHAR* LPCTSTR;

@@ -20,7 +20,11 @@ int main(int argc, char *argv[])
     // get the key file path
     TCHAR keyFile[MAX_PATH];
     ct::Util::homePath(keyFile, MAX_PATH);
+#ifdef WIN32
     _tcscat(keyFile, TEXT("\\"));
+#else
+    _tcscat(keyFile, TEXT("/"));
+#endif
     _tcscat(keyFile, KEY_FILE_NAME);
 
     QApplication a(argc, argv);

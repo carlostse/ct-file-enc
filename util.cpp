@@ -16,6 +16,9 @@
 //#include <sys/stat.h>
 #include <openssl/md5.h>
 #include <openssl/sha.h>
+#ifndef WIN32
+#include <pwd.h>
+#endif
 
 namespace ct
 {
@@ -111,6 +114,10 @@ bool Util::homePath(TCHAR *path, DWORD size)
     HANDLE hToken;
     return OpenProcessToken(GetCurrentProcess(), TOKEN_READ, &hToken) &&
            GetUserProfileDirectory(hToken, path, &size);
+#else
+    struct passwd *pw = getpwuid(getuid());
+    strcpy(path, pw->pw_dir);
+    return strlen(path) > 0;
 #endif
 }
 /*

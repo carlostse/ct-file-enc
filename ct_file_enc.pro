@@ -24,6 +24,12 @@ win32-g++ {
     LIBS += -luserenv -leay32 -lssl32
 }
 
+macx {
+    QMAKE_CXXFLAGS_WARN_ON += -Wno-unknown-pragmas
+    QMAKE_LIBDIR += /usr/local/opt/openssl/lib
+    LIBS += -lcrypto -lssl
+}
+
 HEADERS += constant.h \
     byte_array.h \
     util.h \

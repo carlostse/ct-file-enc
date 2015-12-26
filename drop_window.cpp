@@ -107,7 +107,7 @@ void DropWindow::droppedFiles(const QList<QUrl> list)
         QByteArray arr = fileName.toUtf8();
         inFileName = arr.constData();
 #endif
-
+#ifdef WIN32
         if (GetFileAttributes(inFileName) == FILE_ATTRIBUTE_DIRECTORY){
             qDebug() << fileName << " is a directory";
             _txtMsgBox->appendPlainText(
@@ -116,7 +116,7 @@ void DropWindow::droppedFiles(const QList<QUrl> list)
             );
             continue;
         }
-
+#endif
         if (MasterKey::isEncFile(inFileName)){
             action = "dec";
             outFileName = _masterKey->decrypt(inFileName, errMsg);
