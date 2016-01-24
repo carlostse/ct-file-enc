@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #include "master_key.h"
 #include <openssl/rand.h>
 #include <openssl/aes.h>

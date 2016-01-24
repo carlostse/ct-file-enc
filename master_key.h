@@ -1,5 +1,6 @@
 #ifndef MASTERKEY_H
 #define MASTERKEY_H
+
 /* Copyright 2015 Carlos Tse <copperoxide@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #include "util.h"
 
 namespace ct

@@ -11,22 +11,34 @@ QT += core gui widgets
 TARGET = ct_file_enc
 TEMPLATE = app
 
+CONFIG(debug, debug|release) {
+    DESTDIR = debug
+} else {
+    DESTDIR = release
+}
+OBJECTS_DIR = $$DESTDIR/.obj
+MOC_DIR = $$DESTDIR/.moc
+RCC_DIR = $$DESTDIR/.qrc
+UI_DIR = $$DESTDIR/.ui
+
+QMAKE_CXXFLAGS += -std=gnu++11 -Wno-unknown-pragmas -Wno-switch -Wno-unused-result
+QMAKE_CXXFLAGS_DEBUG += -O0 -Wall -g
+QMAKE_CXXFLAGS_RELEASE += -O2
+
 win32 {
     INCLUDEPATH += C:/OpenSSL-Win32/include
 }
 
 win32-g++ {
     DEFINES -= UNICODE
-    QMAKE_CXXFLAGS += -std=gnu++11 -Wno-unknown-pragmas -Wno-switch -Wno-unused-result
-    QMAKE_CXXFLAGS_DEBUG += -O0 -Wall -g
-    QMAKE_CXXFLAGS_RELEASE += -O2
     QMAKE_LIBDIR += C:/OpenSSL-Win32
     LIBS += -luserenv -leay32 -lssl32
 }
 
 macx {
-    QMAKE_CXXFLAGS_WARN_ON += -Wno-unknown-pragmas
+    INCLUDEPATH += /usr/local/Cellar/openssl/1.0.2e_1/include
     QMAKE_LIBDIR += /usr/local/opt/openssl/lib
+    QMAKE_CXXFLAGS += -Winconsistent-missing-override
     LIBS += -lcrypto -lssl
 }
 

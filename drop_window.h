@@ -1,5 +1,6 @@
 #ifndef DROPWINDOW_H
 #define DROPWINDOW_H
+
 /* Copyright 2015 Carlos Tse <copperoxide@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+#include <QPlainTextEdit>
 #include "drop_area.h"
 #include "master_key.h"
 #include "clickable_label.h"

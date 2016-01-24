@@ -1,5 +1,6 @@
 #ifndef DROPAREA_H
 #define DROPAREA_H
+
 /* Copyright 2015 Carlos Tse <copperoxide@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <QtGui>
+
+#include <QLabel>
+#include <QDragEnterEvent>
 
 class DropArea : public QLabel
 {
