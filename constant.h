@@ -63,4 +63,10 @@ typedef std::string TSTRING;
 #define QStringFromString(str) QString::fromStdString(str)
 #endif
 
+#ifdef WIN32
+#define MSG_BOX_FONT "Segoe UI Symbol"
+#else
+#define MSG_BOX_FONT "Helvetica"
+#endif
+
 #endif // CONSTANT_H

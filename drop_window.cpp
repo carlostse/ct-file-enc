@@ -69,7 +69,7 @@ DropWindow::DropWindow(LPCTSTR keyFile)
     size = QSize(WIN_W, MSG_H);
     _txtMsgBox->setMinimumSize(size);
     _txtMsgBox->setMaximumSize(size);
-    _txtMsgBox->setFont(QFont("Segoe UI Symbol"));
+    _txtMsgBox->setFont(QFont(MSG_BOX_FONT));
     _txtMsgBox->appendPlainText(message);
 
     // layout
