@@ -43,5 +43,19 @@ install_name_tool -change $QTCORE @executable_path/../Frameworks/QtCore.framewor
 install_name_tool -change $QTGUI @executable_path/../Frameworks/QtGui.framework/Versions/$QT_VER_MAJOR/QtGui $EXE
 install_name_tool -change $QTWIDGETS @executable_path/../Frameworks/QtWidgets.framework/Versions/$QT_VER_MAJOR/QtWidgets $EXE
 
-echo "done"
 otool -L $EXE
+
+if [ "$2" == "package" ]; then
+  echo "packaging..."
+  hdiutil create -size 100MB -fs HFS+ -volname "CT File Encrypt" ./release/tmp.dmg
+  hdiutil attach ./release/tmp.dmg
+  cp -R ./release/ct_file_enc.app /Volumes/CT\ File\ Encrypt/CT\ File\ Encrypt.app
+  ln -s /Applications /Volumes/CT\ File\ Encrypt/
+  diskutil eject /Volumes/CT\ File\ Encrypt/
+  hdiutil convert -format UDBZ -o ./release/ct-file-encrypt.dmg ./release/tmp.dmg
+  rm ./release/tmp.dmg
+  rm -rf release/ct_file_enc.app
+fi
+
+echo "done."
+exit 0

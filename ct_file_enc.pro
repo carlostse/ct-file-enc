@@ -40,6 +40,7 @@ macx {
     QMAKE_LIBDIR += /usr/local/opt/openssl/lib
     QMAKE_CXXFLAGS += -Winconsistent-missing-override
     LIBS += -lcrypto -lssl
+    ICON = icon.icns
 }
 
 HEADERS += constant.h \
