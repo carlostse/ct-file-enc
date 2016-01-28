@@ -13,8 +13,10 @@ TARGET = ct_file_enc
 TEMPLATE = app
 
 CONFIG(debug, debug|release) {
+    message(Debug build)
     DESTDIR = debug
 } else {
+    message(Release build)
     DESTDIR = release
 }
 OBJECTS_DIR = $$DESTDIR/.obj

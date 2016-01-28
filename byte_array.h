@@ -1,7 +1,4 @@
-#ifndef BYTE_ARRAY_H
-#define BYTE_ARRAY_H
-
-/* Copyright 2015 Carlos Tse <copperoxide@gmail.com>
+/* Copyright 2016 Carlos Tse <copperoxide@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+#ifndef BYTE_ARRAY_H
+#define BYTE_ARRAY_H
 
 #include <stddef.h>
 #include <cstdlib>

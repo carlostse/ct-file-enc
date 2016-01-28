@@ -17,9 +17,9 @@ $QTDIR/bin/macdeployqt $APP_NAME.app
 
 hdiutil create -size 100MB -fs HFS+ -volname "CT File Encrypt" ./tmp.dmg
 hdiutil attach ./tmp.dmg
-cp -R ./ct_file_enc.app /Volumes/CT\ File\ Encrypt/CT\ File\ Encrypt.app
+cp -R ./$APP_NAME.app /Volumes/CT\ File\ Encrypt/CT\ File\ Encrypt.app
 ln -s /Applications /Volumes/CT\ File\ Encrypt/
 diskutil eject /Volumes/CT\ File\ Encrypt/
-hdiutil convert -format UDBZ -o ./ct-file-encrypt.dmg ./tmp.dmg
+hdiutil convert -format UDBZ -o ./$APP_NAME.dmg ./tmp.dmg
 rm ./tmp.dmg
 echo "done"
