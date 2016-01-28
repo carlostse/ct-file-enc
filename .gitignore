@@ -10,3 +10,4 @@ release/
 *.Release
 msvc/ipch/
 msvc/bin/
+.qmake.stash
