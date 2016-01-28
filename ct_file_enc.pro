@@ -4,10 +4,11 @@
 #
 # Author: Carlos Tse
 # Email: copperoxide@gmail.com
-# Date: 18 AUG 2014
+# Date: 28 JAN 2016
 #-------------------------------------------------
 
-QT += core gui widgets
+QT = core gui
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = ct_file_enc
 TEMPLATE = app
 
