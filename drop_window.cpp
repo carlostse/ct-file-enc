@@ -139,7 +139,11 @@ void DropWindow::droppedFiles(const QList<QUrl> list)
 
 void DropWindow::helpAbout()
 {
+#ifdef Win32
     QSize size = QSize(400, 190);
+#else
+    QSize size = QSize(490, 200);
+#endif
     QTextEdit *about = new QTextEdit();
 
     QPalette pal(about->palette());
@@ -152,7 +156,7 @@ void DropWindow::helpAbout()
     about->setAutoFillBackground(true);
     about->setPalette(pal);
     about->append(
-    "<h3>Copyright 2015 Carlos Tse &lt;copperoxide@gmail.com&gt;</h3>\
+    "<h3>Copyright 2016 Carlos Tse &lt;copperoxide@gmail.com&gt;</h3>\
     <p>\
     Licensed under the Apache License, Version 2.0 (the \"License\");<br>\
     you may not use this file except in compliance with the License.<br>\

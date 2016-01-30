@@ -9,7 +9,7 @@
 
 QT = core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-TARGET = ct_file_enc
+TARGET = ct_file_encrypt
 TEMPLATE = app
 
 CONFIG(debug, debug|release) {
