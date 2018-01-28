@@ -12,8 +12,8 @@ Note:
 Folders are not supported yet. But you can drag multiple files into it.
 
 ### Dependencies
-* OpenSSL 1.0.1
-* Qt 4.8.6 (deprecated) / Qt 5.4.2
+* OpenSSL 1.1.0
+* Qt 5.9
 
 ### Platforms
 Available for Windows and Mac OS X.
@@ -34,8 +34,8 @@ CT File Encrypt 可以把你重要的文件、相片用 AES-256 加密。一拖�
 第一次開啟時，會在 %USERPROFILE% 中建立 key 這個檔案。這個 key 是唯一的，萬一不見了，我也沒有辦法幫你解密檔案，請小心保管！可以用 7z AES-256 把它備份好。
 
 ### 依賴庫
-* OpenSSL 1.0.1
-* Qt 4.8.6 (deprecated) / Qt 5.4.2
+* OpenSSL 1.1.0
+* Qt 5.9
 
 ### 支援平台
 Windows 及 Mac OS X
