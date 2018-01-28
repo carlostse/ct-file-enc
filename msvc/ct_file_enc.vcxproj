@@ -90,12 +90,14 @@
     </ResourceCompile>
     <PostBuildEvent>
       <Command>copy /y $(OPENSSL)\libssl-*.dll $(OutDir)
-
 copy /y $(OPENSSL)\libcrypto-*.dll $(OutDir)
+copy /y $(OPENSSL)\bin\msvcr120.dll $(OutDir)
 copy /y $(QTDIR)\bin\Qt5Cored.dll $(OutDir)
-
 copy /y $(QTDIR)\bin\Qt5Guid.dll $(OutDir)
-copy /y $(QTDIR)\bin\Qt5Widgetsd.dll $(OutDir)</Command>
+copy /y $(QTDIR)\bin\Qt5Widgetsd.dll $(OutDir)
+xcopy /y $(QTDIR)\plugins\platforms\qwindowsd.dll $(OutDir)platforms\
+copy /y "$(VC_ExecutablePath_x64_x64)\msvcp140.dll" $(OutDir)
+copy /y "$(VC_ExecutablePath_x64_x64)\vcruntime140.dll" $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -136,12 +138,14 @@ copy /y $(QTDIR)\bin\Qt5Widgetsd.dll $(OutDir)</Command>
     </ResourceCompile>
     <PostBuildEvent>
       <Command>copy /y $(OPENSSL)\libssl-*.dll $(OutDir)
-
 copy /y $(OPENSSL)\libcrypto-*.dll $(OutDir)
+copy /y $(OPENSSL)\bin\msvcr120.dll $(OutDir)
 copy /y $(QTDIR)\bin\Qt5Core.dll $(OutDir)
-
 copy /y $(QTDIR)\bin\Qt5Gui.dll $(OutDir)
-copy /y $(QTDIR)\bin\Qt5Widgets.dll $(OutDir)</Command>
+copy /y $(QTDIR)\bin\Qt5Widgets.dll $(OutDir)
+xcopy /y $(QTDIR)\plugins\platforms\qwindows.dll $(OutDir)platforms\
+copy /y "$(VC_ExecutablePath_x64_x64)\msvcp140.dll" $(OutDir)
+copy /y "$(VC_ExecutablePath_x64_x64)\vcruntime140.dll" $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
