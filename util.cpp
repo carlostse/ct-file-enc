@@ -19,6 +19,7 @@
 #include <openssl/sha.h>
 #ifndef WIN32
 #include <pwd.h>
+#include <unistd.h>
 #endif
 
 namespace ct
