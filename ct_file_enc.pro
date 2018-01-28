@@ -3,14 +3,15 @@
 # CT File Encrypt
 #
 # Author: Carlos Tse
-# Email: copperoxide@gmail.com
-# Date: 28 JAN 2016
+# Email: carlos@aboutmy.info
+# Date: JAN 29, 2018
 #-------------------------------------------------
 
 QT = core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = ct_file_encrypt
 TEMPLATE = app
+OPENSSL = /usr/local/opt/openssl@1.1
 
 CONFIG(debug, debug|release) {
     message(Debug build)
@@ -28,19 +29,9 @@ QMAKE_CXXFLAGS += -std=gnu++11 -Wno-unknown-pragmas -Wno-switch -Wno-unused-resu
 QMAKE_CXXFLAGS_DEBUG += -O0 -Wall -g
 QMAKE_CXXFLAGS_RELEASE += -O2
 
-win32 {
-    INCLUDEPATH += C:/OpenSSL-Win32/include
-}
-
-win32-g++ {
-    DEFINES -= UNICODE
-    QMAKE_LIBDIR += C:/OpenSSL-Win32
-    LIBS += -luserenv -leay32 -lssl32
-}
-
 macx {
-    INCLUDEPATH += /usr/local/Cellar/openssl/1.0.2e_1/include
-    QMAKE_LIBDIR += /usr/local/opt/openssl/lib
+    INCLUDEPATH += $${OPENSSL}/include
+    QMAKE_LIBDIR += $${OPENSSL}/lib
     QMAKE_CXXFLAGS += -Winconsistent-missing-override
     LIBS += -lcrypto -lssl
     ICON = icon.icns
