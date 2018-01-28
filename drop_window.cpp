@@ -104,7 +104,7 @@ void DropWindow::droppedFiles(const QList<QUrl> list)
         url = list.at(i).path();
         fileName = url.mid(1, url.length() - 1);
 #ifdef UNICODE
-        inFileName = fileName.utf16();
+        inFileName = (LPCTSTR)fileName.utf16();
 #else
         QByteArray arr = fileName.toUtf8();
         inFileName = arr.constData();

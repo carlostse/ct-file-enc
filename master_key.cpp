@@ -99,9 +99,8 @@ bool MasterKey::isEncFile(LPCTSTR fileName)
 bool MasterKey::encrypt(FILE *in, FILE *out, const byte *key, const byte *iv, const byte mode, byte *sha)
 {
     const EVP_CIPHER *cipher = EVP_aes_256_cbc();
-    EVP_CIPHER_CTX ctx;
-    EVP_CIPHER_CTX_init(&ctx);
-    EVP_CipherInit_ex(&ctx, cipher, 0, key, iv, mode);
+    EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
+    EVP_CipherInit_ex(ctx, cipher, 0, key, iv, mode);
 
     byte *ibuf = (byte *)malloc(AES_BLOCK_SIZE);
     byte *obuf = (byte *)malloc(AES_BLOCK_SIZE + EVP_CIPHER_block_size(cipher));
@@ -119,12 +118,12 @@ bool MasterKey::encrypt(FILE *in, FILE *out, const byte *key, const byte *iv, co
             SHA1_Update(&shaCtx, ibuf, ilen);
 
         // encrypt or decrypt depends on ctx
-        ret = EVP_CipherUpdate(&ctx, obuf, &olen, ibuf, ilen);
+        ret = EVP_CipherUpdate(ctx, obuf, &olen, ibuf, ilen);
         if (ret != 1) {
             std::cout << "EVP_CipherUpdate failed" << std::endl;
             free(ibuf);
             free(obuf);
-            EVP_CIPHER_CTX_cleanup(&ctx);
+            EVP_CIPHER_CTX_cleanup(ctx);
             return false;
         }
 
@@ -139,8 +138,8 @@ bool MasterKey::encrypt(FILE *in, FILE *out, const byte *key, const byte *iv, co
     }
 
     // clear up any last bytes left in the output buffer
-    ret = EVP_CipherFinal_ex(&ctx, obuf, &olen);
-    EVP_CIPHER_CTX_cleanup(&ctx);
+    ret = EVP_CipherFinal_ex(ctx, obuf, &olen);
+    EVP_CIPHER_CTX_cleanup(ctx);
 
     if (ret != 1){
         std::cout << "EVP_CipherUpdate failed" << std::endl;
