@@ -28,7 +28,7 @@ namespace ct
 class Util
 {
 public:
-    static std::string hexString(byte *, uint32_t);
+    static std::string hexString(byte *, size_t);
     static std::string hexString(ByteArray *);
     static byte *key(std::string);
     static byte *iv(std::string);

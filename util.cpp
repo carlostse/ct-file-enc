@@ -24,7 +24,7 @@
 
 namespace ct
 {
-std::string Util::hexString(byte *b, uint32_t len)
+std::string Util::hexString(byte *b, size_t len)
 {
     if (!b)
         return "";
@@ -100,7 +100,7 @@ void Util::writeFile(LPCTSTR fileName, ByteArray *data)
 
 int Util::lastIndexOf(const char *str, char c)
 {
-    int len = strlen(str);
+    int len = (int)strlen(str);
     while (len >= 0){
         if (str[len] == c){
             return len;

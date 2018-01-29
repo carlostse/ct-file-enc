@@ -112,7 +112,7 @@ bool MasterKey::encrypt(FILE *in, FILE *out, const byte *key, const byte *iv, co
 
     // read in buffer
     int ilen, olen, ret;
-    while ((ilen = fread(ibuf, 1, AES_BLOCK_SIZE, in)) > 0) {
+    while ((ilen = (int)fread(ibuf, 1, AES_BLOCK_SIZE, in)) > 0) {
         // update SHA-1
         if (sha)
             SHA1_Update(&shaCtx, ibuf, ilen);
