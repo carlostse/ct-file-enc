@@ -89,8 +89,7 @@
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN32;QT_DLL;QT_GUI_LIB;QT_CORE_LIB;QT_HAVE_MMX;QT_HAVE_3DNOW;QT_HAVE_SSE;QT_HAVE_MMXEXT;QT_HAVE_SSE2;QT_THREAD_SUPPORT;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy /y $(OPENSSL)\libssl-*.dll $(OutDir)
-copy /y $(OPENSSL)\libcrypto-*.dll $(OutDir)
+      <Command>copy /y $(OPENSSL)\libcrypto-*.dll $(OutDir)
 copy /y $(OPENSSL)\bin\msvcr120.dll $(OutDir)
 copy /y $(QTDIR)\bin\Qt5Cored.dll $(OutDir)
 copy /y $(QTDIR)\bin\Qt5Guid.dll $(OutDir)
@@ -137,8 +136,7 @@ copy /y "$(VC_ExecutablePath_x64_x64)\vcruntime140.dll" $(OutDir)</Command>
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN32;QT_DLL;QT_NO_DEBUG;QT_GUI_LIB;QT_CORE_LIB;QT_HAVE_MMX;QT_HAVE_3DNOW;QT_HAVE_SSE;QT_HAVE_MMXEXT;QT_HAVE_SSE2;QT_THREAD_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy /y $(OPENSSL)\libssl-*.dll $(OutDir)
-copy /y $(OPENSSL)\libcrypto-*.dll $(OutDir)
+      <Command>copy /y $(OPENSSL)\libcrypto-*.dll $(OutDir)
 copy /y $(OPENSSL)\bin\msvcr120.dll $(OutDir)
 copy /y $(QTDIR)\bin\Qt5Core.dll $(OutDir)
 copy /y $(QTDIR)\bin\Qt5Gui.dll $(OutDir)
