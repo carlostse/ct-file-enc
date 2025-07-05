@@ -22,11 +22,11 @@ class ClickableLabel : public QLabel
 {
 Q_OBJECT
 public:
-    explicit ClickableLabel(const QString& text="", QWidget* parent=0);
+    explicit ClickableLabel(const QString& text="", QWidget* parent=nullptr);
     ~ClickableLabel();
 
 protected:
-    void mousePressEvent(QMouseEvent *);
+    void mousePressEvent(QMouseEvent*);
 
 signals:
     void clicked();

@@ -14,20 +14,19 @@
  */
 
 #include "byte_array.h"
-#include <string.h>
 
 namespace ct
 {
-ByteArray::ByteArray(size_t size)
+ByteArray::ByteArray(const size_t size)
 {
     this->_size = size;
-    this->_data = (byte *)malloc(size);
+    this->_data = static_cast<byte*>(malloc(size));
 }
 
-ByteArray::ByteArray(size_t size, byte *data)
+ByteArray::ByteArray(const size_t size, const byte* data)
 {
     this->_size = size;
-    this->_data = (byte *)malloc(size);
+    this->_data = static_cast<byte*>(malloc(size));
     memcpy(this->_data, data, size);
 }
 
@@ -35,21 +34,21 @@ ByteArray::~ByteArray()
 {
     if (_data){
         free(_data);
-        _data = NULL;
+        _data = nullptr;
     }
 }
 
-size_t ByteArray::size()
+size_t ByteArray::size() const
 {
     return this->_size;
 }
 
-byte *ByteArray::data()
+byte* ByteArray::data() const
 {
     return this->_data;
 }
 
-ByteArray *ByteArray::copy()
+ByteArray* ByteArray::copy() const
 {
     return new ByteArray(_size, _data);
 }

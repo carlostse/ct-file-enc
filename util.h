@@ -16,27 +16,24 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#include <stdint.h>
-#include <cstdio>
-#include <iostream>
-#include <fstream>
 #include "constant.h"
 #include "byte_array.h"
+#include <iostream>
 
 namespace ct
 {
 class Util
 {
 public:
-    static std::string hexString(byte *, size_t);
-    static std::string hexString(ByteArray *);
-    static byte *key(std::string);
-    static byte *iv(std::string);
-    static bool isFileExists(LPCTSTR);
-    static ByteArray *readFile(LPCTSTR);
-    static void writeFile(LPCTSTR, ByteArray *);
-    static int lastIndexOf(const char *, char);
-    static bool homePath(TCHAR *, DWORD);
+    static std::string hexString(const byte*, const size_t);
+    static std::string hexString(const ByteArray*);
+    static byte* key(const std::string&);
+    static byte* iv(const std::string&);
+    static bool isFileExists(const LPCTSTR);
+    static ByteArray* readFile(const LPCTSTR);
+    static void writeFile(const LPCTSTR, const ByteArray*);
+    static int lastIndexOf(const char*, const char);
+    static bool homePath(TCHAR*, DWORD);
 //    static std::string getExeFileName();
 //    static std::string getExePath();
 };

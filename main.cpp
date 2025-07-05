@@ -17,7 +17,7 @@
 #include "drop_window.h"
 #include "util.h"
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     // get the key file path
     TCHAR keyFile[MAX_PATH];
@@ -32,5 +32,5 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     ct::DropWindow w(keyFile);
     w.show();
-    return a.exec();
+    return QApplication::exec();
 }

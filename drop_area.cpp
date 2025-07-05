@@ -16,7 +16,7 @@
 #include "drop_area.h"
 #include <QMimeData>
 
-DropArea::DropArea(const QSize &s, QWidget *parent)
+DropArea::DropArea(const QSize& s, QWidget* parent)
     : QLabel(parent)
 {
     setMinimumSize(s);
@@ -25,28 +25,26 @@ DropArea::DropArea(const QSize &s, QWidget *parent)
     setAcceptDrops(true);
 }
 
-void DropArea::dragEnterEvent(QDragEnterEvent *event)
+void DropArea::dragEnterEvent(QDragEnterEvent* event)
 {
     event->acceptProposedAction();
 }
 
-void DropArea::dragMoveEvent(QDragMoveEvent *event)
+void DropArea::dragMoveEvent(QDragMoveEvent* event)
 {
     event->acceptProposedAction();
 }
 
-void DropArea::dropEvent(QDropEvent *event)
+void DropArea::dropEvent(QDropEvent* event)
 {
-    const QMimeData *mimeData = event->mimeData();
-
-    if (mimeData->hasUrls()) {
+    if (const QMimeData* mimeData = event->mimeData(); mimeData->hasUrls()) {
         emit dropped(mimeData->urls());
     }
 
     event->acceptProposedAction();
 }
 
-void DropArea::dragLeaveEvent(QDragLeaveEvent *event)
+void DropArea::dragLeaveEvent(QDragLeaveEvent* event)
 {
     clear();
     event->accept();

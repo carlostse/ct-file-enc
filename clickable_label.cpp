@@ -24,7 +24,7 @@ ClickableLabel::~ClickableLabel()
 {
 }
  
-void ClickableLabel::mousePressEvent(QMouseEvent *)
+void ClickableLabel::mousePressEvent(QMouseEvent*)
 {
     emit clicked();
 }

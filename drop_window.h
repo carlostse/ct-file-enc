@@ -40,17 +40,17 @@ public:
     virtual ~DropWindow();
 
 public slots:
-    void droppedFiles(const QList<QUrl> list);
+    void droppedFiles(const QList<QUrl> &);
     void helpAbout();
 
 private:
     LPCTSTR _keyFile;
-    MasterKey *_masterKey;
-    DropArea *_dropArea;
-    ClickableLabel *_lblAbout;
-    QPlainTextEdit *_txtMsgBox;
-    QString getLock(const bool);
-    QString getWarn();
+    MasterKey* _masterKey;
+    DropArea* _dropArea;
+    ClickableLabel* _lblAbout;
+    QPlainTextEdit* _txtMsgBox;
+    static QString getLock(const bool);
+    static QString getWarn();
 };
 }
 

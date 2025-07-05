@@ -23,24 +23,24 @@ namespace ct
 {
 MasterKey::MasterKey()
 {
-    _key = NULL;
-    _iv = NULL;
+    _key = nullptr;
+    _iv = nullptr;
 }
 
 MasterKey::~MasterKey()
 {
     if (_key){
         free(_key);
-        _key = NULL;
+        _key = nullptr;
     }
 
     if (_iv){
         free(_iv);
-        _iv = NULL;
+        _iv = nullptr;
     }
 }
 
-void MasterKey::prepare(KeyResult *result, LPCTSTR keyFile)
+void MasterKey::prepare(KeyResult *result, const LPCTSTR keyFile)
 {
     std::cout << "key file: " << keyFile << std::endl;
 
@@ -48,9 +48,9 @@ void MasterKey::prepare(KeyResult *result, LPCTSTR keyFile)
         result->type = TYPE_KEY_FILE_LOAD;
         std::cout << "load from key file" << std::endl;
 
-        ByteArray *array = Util::readFile(keyFile);
-        setKey((byte *)malloc(KEY_LENGTH));
-        setIv((byte *)malloc(IV_LENGTH));
+        const ByteArray* array = Util::readFile(keyFile);
+        setKey(static_cast<byte*>(malloc(KEY_LENGTH)));
+        setIv(static_cast<byte*>(malloc(IV_LENGTH)));
         memcpy(_key, array->data(), KEY_LENGTH);
         memcpy(_iv, &array->data()[KEY_LENGTH], IV_LENGTH);
         delete array;
@@ -58,7 +58,7 @@ void MasterKey::prepare(KeyResult *result, LPCTSTR keyFile)
         result->type = TYPE_KEY_FILE_SAVE;
         generate();
         // save to key file
-        ByteArray array(KEY_LENGTH + IV_LENGTH);
+        const ByteArray array(KEY_LENGTH + IV_LENGTH);
         memcpy(array.data(), _key, KEY_LENGTH);
         memcpy(&array.data()[KEY_LENGTH], _iv, IV_LENGTH);
         Util::writeFile(keyFile, &array);
@@ -67,26 +67,26 @@ void MasterKey::prepare(KeyResult *result, LPCTSTR keyFile)
     result->identity = Util::hexString(_key, KEY_LENGTH);
 }
 
-bool MasterKey::exists(LPCTSTR keyFile) const
-{
+bool MasterKey::exists(const LPCTSTR keyFile) {
     return Util::isFileExists(keyFile);
 }
 
 void MasterKey::generate()
 {
     //std::cout << "generate key" << std::endl;
-    setKey((byte *)malloc(KEY_LENGTH));
+    setKey(static_cast<byte*>(malloc(KEY_LENGTH)));
     RAND_bytes(_key, KEY_LENGTH);
 
     //std::cout << "generate iv" << std::endl;
-    setIv((byte *)malloc(IV_LENGTH));
+    setIv(static_cast<byte*>(malloc(IV_LENGTH)));
     RAND_bytes(_iv, IV_LENGTH);
 }
 
-bool MasterKey::isEncFile(LPCTSTR fileName)
+bool MasterKey::isEncFile(const LPCTSTR fileName)
 {
-    size_t lenExt = _tcslen(KEY_ENC_EXT),
-           lenFilename = _tcslen(fileName);
+    const size_t
+    lenExt = _tcslen(KEY_ENC_EXT),
+    lenFilename = _tcslen(fileName);
 
     if (lenFilename < lenExt) return false;
 
@@ -96,23 +96,23 @@ bool MasterKey::isEncFile(LPCTSTR fileName)
     return _tcscmp(ext, KEY_ENC_EXT) == 0;
 }
 
-bool MasterKey::encrypt(FILE *in, FILE *out, const byte *key, const byte *iv, const byte mode, byte *sha)
+bool MasterKey::encrypt(FILE* in, FILE* out, const byte* key, const byte* iv, const byte mode, byte* sha)
 {
     const EVP_CIPHER *cipher = EVP_aes_256_cbc();
     EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
-    EVP_CipherInit_ex(ctx, cipher, 0, key, iv, mode);
+    EVP_CipherInit_ex(ctx, cipher, nullptr, key, iv, mode);
 
-    byte *ibuf = (byte *)malloc(AES_BLOCK_SIZE);
-    byte *obuf = (byte *)malloc(AES_BLOCK_SIZE + EVP_CIPHER_block_size(cipher));
+    byte *ibuf = static_cast<byte*>(malloc(AES_BLOCK_SIZE));
+    byte *obuf = static_cast<byte*>(malloc(AES_BLOCK_SIZE + EVP_CIPHER_block_size(cipher)));
 
-    // calac the SHA-1 of the source
+    // calc the SHA-1 of the source
     SHA_CTX shaCtx;
     if (sha)
         SHA1_Init(&shaCtx);
 
     // read in buffer
     int ilen, olen, ret;
-    while ((ilen = (int)fread(ibuf, 1, AES_BLOCK_SIZE, in)) > 0) {
+    while ((ilen = static_cast<int>(fread(ibuf, 1, AES_BLOCK_SIZE, in))) > 0) {
         // update SHA-1
         if (sha)
             SHA1_Update(&shaCtx, ibuf, ilen);
@@ -156,7 +156,7 @@ bool MasterKey::encrypt(FILE *in, FILE *out, const byte *key, const byte *iv, co
     return true;
 }
 
-void MasterKey::openFile(FILE **in, FILE **out, LPCTSTR inFileName, LPCTSTR outFileName)
+void MasterKey::openFile(FILE** in, FILE** out, LPCTSTR inFileName, LPCTSTR outFileName)
 {
 #ifdef UNICODE
     *in = _wfopen(inFileName, TEXT("rb"));
@@ -167,16 +167,17 @@ void MasterKey::openFile(FILE **in, FILE **out, LPCTSTR inFileName, LPCTSTR outF
 #endif
 }
 
-TSTRING MasterKey::encrypt(LPCTSTR fileName, TSTRING &errMsg, byte *sha)
+TSTRING MasterKey::encrypt(const LPCTSTR fileName, TSTRING &errMsg, byte *sha) const
 {
-    TSTRING result, inFileName = TSTRING(fileName);
+    const auto inFileName = TSTRING(fileName);
+    TSTRING result;
 
     if (!Util::isFileExists(fileName)){
         errMsg = inFileName + TEXT(" does not exists");
         return result;
     }
 
-    TSTRING outFileName = inFileName + KEY_ENC_EXT;
+    const TSTRING outFileName = inFileName + KEY_ENC_EXT;
 
     FILE *in, *out;
     openFile(&in, &out, fileName, outFileName.c_str());
@@ -191,9 +192,10 @@ TSTRING MasterKey::encrypt(LPCTSTR fileName, TSTRING &errMsg, byte *sha)
     return result;
 }
 
-TSTRING MasterKey::decrypt(LPCTSTR fileName, TSTRING &errMsg)
+TSTRING MasterKey::decrypt(const LPCTSTR fileName, TSTRING &errMsg) const
 {
-    TSTRING result, inFileName = TSTRING(fileName);
+    const auto inFileName = TSTRING(fileName);
+    TSTRING result;
 
     if (!Util::isFileExists(fileName)){
         errMsg = inFileName + TEXT(" does not exists");
@@ -206,10 +208,11 @@ TSTRING MasterKey::decrypt(LPCTSTR fileName, TSTRING &errMsg)
     }
 
     // restore original extension (just remove KEY_ENC_EXT)
-    size_t lenExt = _tcslen(KEY_ENC_EXT),
-           lenFileName = _tcslen(fileName),
-           lenOutName = lenFileName - lenExt;
-    TCHAR *outFileName = new TCHAR[lenOutName + 1];
+    const size_t
+    lenExt = _tcslen(KEY_ENC_EXT),
+    lenFileName = _tcslen(fileName),
+    lenOutName = lenFileName - lenExt;
+    auto *outFileName = new TCHAR[lenOutName + 1];
     memcpy(outFileName, fileName, sizeof(TCHAR) * lenOutName);
     outFileName[lenOutName] = 0;
 
@@ -229,12 +232,12 @@ TSTRING MasterKey::decrypt(LPCTSTR fileName, TSTRING &errMsg)
 
 #pragma region setters and getters
 
-byte *MasterKey::key()
+byte* MasterKey::key() const
 {
     return this->_key;
 }
 
-void MasterKey::setKey(byte *b)
+void MasterKey::setKey(byte* b)
 {
     if (_key){
         std::cout << "delete old key" << std::endl;
@@ -243,12 +246,12 @@ void MasterKey::setKey(byte *b)
     _key = b;
 }
 
-byte *MasterKey::iv()
+byte* MasterKey::iv() const
 {
     return this->_iv;
 }
 
-void MasterKey::setIv(byte *b)
+void MasterKey::setIv(byte* b)
 {
     if (_iv){
         std::cout << "delete old iv" << std::endl;

@@ -16,8 +16,6 @@
 #ifndef BYTE_ARRAY_H
 #define BYTE_ARRAY_H
 
-#include <stddef.h>
-#include <cstdlib>
 #include "constant.h"
 
 namespace ct
@@ -28,12 +26,12 @@ private:
     size_t _size;
     byte *_data;
 public:
-    ByteArray(size_t);
-    ByteArray(size_t, byte *);
+    ByteArray(const size_t);
+    ByteArray(const size_t, const byte*);
     ~ByteArray();
-    size_t size();
-    byte *data();
-    ByteArray *copy();
+    size_t size() const;
+    byte* data() const;
+    ByteArray* copy() const;
 };
 }
 

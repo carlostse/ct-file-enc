@@ -20,12 +20,12 @@
 
 namespace ct
 {
-DropWindow::DropWindow(LPCTSTR keyFile)
+DropWindow::DropWindow(const LPCTSTR keyFile)
 {
     _keyFile = keyFile;
 
     // window
-    QSize size = QSize(WIN_W, WIN_H);
+    auto size = QSize(WIN_W, WIN_H);
     setWindowTitle(tr("CT File Encrypt %1").arg(__VER__));
     setMinimumSize(size);
     setMaximumSize(size);
@@ -61,8 +61,8 @@ DropWindow::DropWindow(LPCTSTR keyFile)
     message.append(tr("Fingerprint: "));
     message.append(QString::fromStdString(result.identity).mid(0, 24));
     if (result.type == TYPE_KEY_FILE_SAVE){
-        message.append("\n");
-        message.append(tr("[Warning] Don't lost the key file otherwise you cannot decrypt the files"));
+        message.append(tr("\n[Warning] Don't lost the key file otherwise you cannot decrypt the files"));
+        message.append(tr("\n[Tips] Recommend encrypt the key file with NTFS EFS"));
     }
 
     _txtMsgBox = new QPlainTextEdit(this);
@@ -73,7 +73,7 @@ DropWindow::DropWindow(LPCTSTR keyFile)
     _txtMsgBox->appendPlainText(message);
 
     // layout
-    QVBoxLayout *mainLayout = new QVBoxLayout;
+    auto* mainLayout = new QVBoxLayout;
     mainLayout->setContentsMargins(0, PADDING, PADDING, 0);
     mainLayout->addWidget(_lblAbout, 0, Qt::AlignRight);
     mainLayout->addWidget(_dropArea);
@@ -93,7 +93,7 @@ DropWindow::~DropWindow()
     delete _txtMsgBox;
 }
 
-void DropWindow::droppedFiles(const QList<QUrl> list)
+void DropWindow::droppedFiles(const QList<QUrl>& list)
 {
     QString url, fileName, out;
     LPCTSTR inFileName;
@@ -144,7 +144,7 @@ void DropWindow::helpAbout()
 #else
     QSize size = QSize(490, 200);
 #endif
-    QTextEdit *about = new QTextEdit();
+    auto* about = new QTextEdit();
 
     QPalette pal(about->palette());
     pal.setColor(QPalette::Base, this->palette().window().color());

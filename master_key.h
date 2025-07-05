@@ -29,23 +29,24 @@ class MasterKey
 {
 private:
     byte *_key, *_iv;
-    bool exists(LPCTSTR) const;
+
+    static bool exists(const LPCTSTR);
     void generate();
-    void setKey(byte *);
-    void setIv(byte *);
-    bool encrypt(FILE *in, FILE *out, const byte *key, const byte *iv, const byte mode, byte * = NULL);
-    void openFile(FILE **in, FILE **out, LPCTSTR inFileName, LPCTSTR outFileName);
+    void setKey(byte*);
+    void setIv(byte*);
+    static bool encrypt(FILE* in, FILE* out, const byte* key, const byte* iv, const byte mode, byte* = nullptr);
+    static void openFile(FILE** in, FILE** out, LPCTSTR inFileName, LPCTSTR outFileName);
 public:
-    static const int KEY_LENGTH = 32;
-    static const int IV_LENGTH = 16;
+    static constexpr int KEY_LENGTH = 32;
+    static constexpr int IV_LENGTH = 16;
     MasterKey();
     ~MasterKey();
-    void prepare(KeyResult *, LPCTSTR);
-    static bool isEncFile(LPCTSTR);
-    TSTRING encrypt(LPCTSTR fileName, TSTRING &errMsg, byte * = NULL);
-    TSTRING decrypt(LPCTSTR fileName, TSTRING &errMsg);
-    byte *key();
-    byte *iv();
+    void prepare(KeyResult*, const LPCTSTR);
+    static bool isEncFile(const LPCTSTR);
+    TSTRING encrypt(const LPCTSTR fileName, TSTRING &errMsg, byte* = nullptr) const;
+    TSTRING decrypt(const LPCTSTR fileName, TSTRING &errMsg) const;
+    byte* key() const;
+    byte* iv() const;
 };
 }
 

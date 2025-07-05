@@ -17,6 +17,9 @@
 //#include <sys/stat.h>
 #include <openssl/md5.h>
 #include <openssl/sha.h>
+#include <cstdint>
+#include <cstdio>
+#include <fstream>
 #ifndef WIN32
 #include <pwd.h>
 #include <unistd.h>
@@ -24,83 +27,83 @@
 
 namespace ct
 {
-std::string Util::hexString(byte *b, size_t len)
+std::string Util::hexString(const byte* b, const size_t len)
 {
     if (!b)
         return "";
 
-    char *hex = (char *)malloc(len * 2 + 1);
+    const auto hex = static_cast<char*>(malloc(len * 2 + 1));
     for (uint i = 0; i < len; i++){
         sprintf(&hex[i * 2], "%02x", b[i]);
     }
     hex[len * 2] = 0;
-    std::string result = std::string(hex);
+    auto result = std::string(hex);
     free(hex);
     return result;
 }
 
-std::string Util::hexString(ByteArray *array)
+std::string Util::hexString(const ByteArray* array)
 {
     return hexString(array->data(), array->size());
 }
 
-byte *Util::key(std::string str)
+byte* Util::key(const std::string& str)
 {
-    byte *digest = new byte[SHA256_DIGEST_LENGTH];
-    SHA256((const unsigned char *)str.c_str(), str.length(), digest);
+    const auto digest = new byte[SHA256_DIGEST_LENGTH];
+    SHA256(reinterpret_cast<const unsigned char* >(str.c_str()), str.length(), digest);
     return digest;
 }
 
-byte *Util::iv(std::string str)
+byte* Util::iv(const std::string& str)
 {
-    byte *digest = new byte[MD5_DIGEST_LENGTH];
-    MD5((const unsigned char *)str.c_str(), str.length(), digest);
+    const auto digest = new byte[MD5_DIGEST_LENGTH];
+    MD5(reinterpret_cast<const unsigned char* >(str.c_str()), str.length(), digest);
     return digest;
 }
 
-bool Util::isFileExists(LPCTSTR fileName)
+bool Util::isFileExists(const LPCTSTR fileName)
 {
 //    struct stat buf;
 //    return stat(fileName, &buf) != -1;
-    std::ifstream file(fileName);
+    const std::ifstream file(fileName);
     return file.good();
 }
 
-ByteArray *Util::readFile(LPCTSTR fileName)
+ByteArray* Util::readFile(const LPCTSTR fileName)
 {
     if (!isFileExists(fileName)){
         std::cout << fileName << " does not exists" << std::endl;
-        return NULL;
+        return nullptr;
     }
 
     std::ifstream file(fileName);
     file.seekg(0, std::ios::end);
-    size_t len = (size_t) file.tellg(); // the key file is small
+    const size_t len = file.tellg(); // the key file is small
     file.seekg(0, std::ios::beg);
 
     if (len < 1){
         std::cout << fileName << " empty" << std::endl;
-        return NULL;
+        return nullptr;
     }
 
-    ByteArray *array = new ByteArray(len);
-    file.read((char *)array->data(), len);
+    auto *array = new ByteArray(len);
+    file.read(reinterpret_cast<char*>(array->data()), len);
     file.close();
 
     return array;
 }
 
-void Util::writeFile(LPCTSTR fileName, ByteArray *data)
+void Util::writeFile(const LPCTSTR fileName, const ByteArray* data)
 {
     std::ofstream file(fileName, std::ios::out | std::ios::binary);
     file.seekp(0);
-    file.write ((char*)data->data(), data->size());
+    file.write(reinterpret_cast<char*>(data->data()), data->size());
     file.close();
 }
 
-int Util::lastIndexOf(const char *str, char c)
+int Util::lastIndexOf(const char* str, const char c)
 {
-    int len = (int)strlen(str);
+    int len = static_cast<int>(strlen(str));
     while (len >= 0){
         if (str[len] == c){
             return len;
@@ -110,7 +113,7 @@ int Util::lastIndexOf(const char *str, char c)
     return -1;
 }
 
-bool Util::homePath(TCHAR *path, DWORD size)
+bool Util::homePath(TCHAR* path, DWORD size)
 {
 #ifdef WIN32
     HANDLE hToken;
