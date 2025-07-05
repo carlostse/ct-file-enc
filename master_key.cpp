@@ -123,7 +123,7 @@ bool MasterKey::encrypt(FILE* in, FILE* out, const byte* key, const byte* iv, co
             std::cout << "EVP_CipherUpdate failed" << std::endl;
             free(ibuf);
             free(obuf);
-            EVP_CIPHER_CTX_cleanup(ctx);
+            EVP_CIPHER_CTX_reset(ctx);
             return false;
         }
 
@@ -139,7 +139,7 @@ bool MasterKey::encrypt(FILE* in, FILE* out, const byte* key, const byte* iv, co
 
     // clear up any last bytes left in the output buffer
     ret = EVP_CipherFinal_ex(ctx, obuf, &olen);
-    EVP_CIPHER_CTX_cleanup(ctx);
+    EVP_CIPHER_CTX_reset(ctx);
 
     if (ret != 1){
         std::cout << "EVP_CipherUpdate failed" << std::endl;
