@@ -8,7 +8,10 @@ debug/
 release/
 *.Debug
 *.Release
+cmake-build-debug/
+cmake-build-release/
 msvc/ipch/
 msvc/bin/
 msvc/.vs/
+.idea/
 .qmake.stash

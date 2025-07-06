@@ -156,7 +156,7 @@ void DropWindow::helpAbout()
     about->setAutoFillBackground(true);
     about->setPalette(pal);
     about->append(
-    "<h3>Copyright 2018 Carlos Tse &lt;carlos@aboutmy.info&gt;</h3>\
+    "<h3>Copyright 2025 Carlos Tse &lt;carlos@aboutmy.info&gt;</h3>\
     <p>\
     Licensed under the Apache License, Version 2.0 (the \"License\");<br>\
     you may not use this file except in compliance with the License.<br>\

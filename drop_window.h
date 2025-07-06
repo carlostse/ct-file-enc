@@ -21,9 +21,9 @@
 #include "master_key.h"
 #include "clickable_label.h"
 
-#define WIN_H 280
-#define WIN_W 280
-#define MSG_H 70
+#define WIN_H 300
+#define WIN_W 300
+#define MSG_H 80
 #define MENU_H 20
 #define PADDING 10
 
