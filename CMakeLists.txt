@@ -19,7 +19,7 @@ set(CMAKE_AUTOUIC ON)
 find_package(OpenSSL REQUIRED)
 
 # require to set Qt5_DIR to Qt5 installation
-find_package(Qt5 COMPONENTS
+find_package(Qt6 COMPONENTS
         Core
         Gui
         Widgets
@@ -43,9 +43,13 @@ target_include_directories(ct_file_enc
         PRIVATE ${OPENSSL_INCLUDE_DIR}
 )
 
+IF(WIN32)
+    target_link_libraries(ct_file_enc PRIVATE userenv.lib)
+ENDIF(WIN32)
+
 target_link_libraries(ct_file_enc
-        PRIVATE userenv.lib OpenSSL::SSL OpenSSL::Crypto
-        PUBLIC Qt5::Core Qt5::Gui Qt5::Widgets
+        PRIVATE OpenSSL::SSL OpenSSL::Crypto
+        PUBLIC Qt6::Core Qt6::Gui Qt6::Widgets
 )
 
 set_target_properties(ct_file_enc PROPERTIES

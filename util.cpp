@@ -19,6 +19,7 @@
 #include <openssl/sha.h>
 #include <cstdint>
 #include <cstdio>
+#include <cstring>
 #include <fstream>
 #ifndef WIN32
 #include <pwd.h>
@@ -103,7 +104,7 @@ void Util::writeFile(const LPCTSTR fileName, const ByteArray* data)
 
 int Util::lastIndexOf(const char* str, const char c)
 {
-    int len = static_cast<int>(strlen(str));
+    int len = static_cast<int>(std::strlen(str));
     while (len >= 0){
         if (str[len] == c){
             return len;
