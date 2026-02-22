@@ -1,6 +1,6 @@
 # CT File Encrypt
 
-![screenshot](https://raw.githubusercontent.com/carlostse/ct-file-enc/refs/heads/screenshot/screenshot/ct-file-enc.webp)
+![screenshot](https://raw.githubusercontent.com/carlostse/ct-file-enc/refs/heads/master/screenshot/ct-file-enc.webp)
 
 ### Introduction
 CT File Encrypt can encrypt your private documents using strong AES-256 encryption without password.
