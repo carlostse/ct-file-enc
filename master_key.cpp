@@ -13,11 +13,12 @@
  * limitations under the License.
  */
 
-#include "master_key.h"
+#include <cstring>
 #include <openssl/rand.h>
 #include <openssl/aes.h>
 #include <openssl/evp.h>
 #include <openssl/sha.h>
+#include "master_key.h"
 
 namespace ct
 {

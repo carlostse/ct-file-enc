@@ -18,7 +18,7 @@
 
 #include <string>
 
-#define __VER__ "1.1.1"
+#define __VER__ "1.1.2"
 
 #define KEY_FILE_NAME TEXT("key")
 #define KEY_ENC_EXT TEXT(".enc")

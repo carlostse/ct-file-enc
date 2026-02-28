@@ -4,6 +4,7 @@
 *.suo
 *.pdb
 Makefile*
+build/
 debug/
 release/
 *.Debug
